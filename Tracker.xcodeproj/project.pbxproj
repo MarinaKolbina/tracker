@@ -13,6 +13,7 @@
 		B368729729D9ACD600FF0E70 /* NewBehaviorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729629D9ACD600FF0E70 /* NewBehaviorViewController.swift */; };
 		B368729929D9ACFA00FF0E70 /* NewIrregularEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729829D9ACFA00FF0E70 /* NewIrregularEventViewController.swift */; };
 		B368729B29DA00C600FF0E70 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729A29DA00C600FF0E70 /* Models.swift */; };
+		B368729E29DA102200FF0E70 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729D29DA102200FF0E70 /* TextField.swift */; };
 		B3DBC87429D20F920042CFB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DBC87329D20F920042CFB0 /* AppDelegate.swift */; };
 		B3DBC87629D20F920042CFB0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DBC87529D20F920042CFB0 /* SceneDelegate.swift */; };
 		B3DBC87829D20F920042CFB0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DBC87729D20F920042CFB0 /* ViewController.swift */; };
@@ -27,6 +28,7 @@
 		B368729629D9ACD600FF0E70 /* NewBehaviorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBehaviorViewController.swift; sourceTree = "<group>"; };
 		B368729829D9ACFA00FF0E70 /* NewIrregularEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewIrregularEventViewController.swift; sourceTree = "<group>"; };
 		B368729A29DA00C600FF0E70 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		B368729D29DA102200FF0E70 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		B3DBC87029D20F920042CFB0 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3DBC87329D20F920042CFB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B3DBC87529D20F920042CFB0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +49,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B368729C29DA100800FF0E70 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B368729D29DA102200FF0E70 /* TextField.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		B3DBC86729D20F920042CFB0 = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +76,7 @@
 		B3DBC87229D20F920042CFB0 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				B368729C29DA100800FF0E70 /* Components */,
 				B3DBC87329D20F920042CFB0 /* AppDelegate.swift */,
 				B3DBC87529D20F920042CFB0 /* SceneDelegate.swift */,
 				B3DBC87729D20F920042CFB0 /* ViewController.swift */,
@@ -155,6 +166,7 @@
 				B368729929D9ACFA00FF0E70 /* NewIrregularEventViewController.swift in Sources */,
 				B368729529D8A65A00FF0E70 /* MakeNewTrackerViewController.swift in Sources */,
 				B3DBC87829D20F920042CFB0 /* ViewController.swift in Sources */,
+				B368729E29DA102200FF0E70 /* TextField.swift in Sources */,
 				B368728F29D85C8100FF0E70 /* TabBarController.swift in Sources */,
 				B368729729D9ACD600FF0E70 /* NewBehaviorViewController.swift in Sources */,
 				B3DBC87429D20F920042CFB0 /* AppDelegate.swift in Sources */,
