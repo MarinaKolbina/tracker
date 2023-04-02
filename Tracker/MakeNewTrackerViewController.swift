@@ -7,60 +7,53 @@
 
 import Foundation
 import UIKit
-import SwiftUI
 
-struct ContentView01: View {
+class MakeNewTrackerViewController: UIViewController {
     
-    @State var showView = false
-    
-    var body: some View {
+    override func viewDidLoad() {
+         super.viewDidLoad()
         
-        ZStack {
-//            Color.green.ignoresSafeArea()
-//
-            Button {
-                showView.toggle()
-            } label: {
-                Text("Present Screen")
-                    .font(.callout)
-                    .padding()
-                    .padding(.horizontal)
-            }
-            .buttonStyle(.automatic)
-       
-            .sheet(isPresented: $showView) {
-                SecondView()
-            }
-        }
-    }
-}
 
-struct SecondView: View {
-    
-    @Environment(\.presentationMode) var presentationMode
-    
-    var body: some View {
-        ZStack {
-            
-//            Color.orange
-//                .ignoresSafeArea()
-            
-            VStack {
-                Button {
-                  presentationMode.wrappedValue.dismiss()
+        view.backgroundColor = .white
+        
+        //Create items
+        let behaviorButton = UIButton()
+        behaviorButton.tintColor = .black
+        view.addSubview(behaviorButton)
 
-                } label: {
-                    Image(systemName: "x.circle")
-                        .foregroundColor(.black)
-                        .font(.largeTitle)
-                }
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .trailing)
-                Spacer()
-            }
-            
-            Text("This is the second one")
-                .font(.callout)
-        }
+        let irregularEventButton = UIButton()
+        irregularEventButton.tintColor = .black
+        view.addSubview(irregularEventButton)
+
+        let title = UILabel()
+        title.text = "Создание трекера"
+        title.font = UIFont(name:"HelveticaNeue-Bold", size: 16.0)
+        title.textColor = .black
+        view.addSubview(title)
+
+        behaviorButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            behaviorButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 335),
+            behaviorButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            behaviorButton.widthAnchor.constraint(equalToConstant: 335),
+            behaviorButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
+
+        irregularEventButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            irregularEventButton.topAnchor.constraint(equalTo: behaviorButton.bottomAnchor, constant: -16),
+            irregularEventButton.centerYAnchor.constraint(equalTo: behaviorButton.centerYAnchor),
+            irregularEventButton.widthAnchor.constraint(equalToConstant: 335),
+            irregularEventButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
+        
+        title.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            title.topAnchor.constraint(equalTo: behaviorButton.bottomAnchor, constant: -16),
+            title.centerYAnchor.constraint(equalTo: behaviorButton.centerYAnchor),
+            title.widthAnchor.constraint(equalToConstant: 335),
+            title.heightAnchor.constraint(equalToConstant: 60)
+        ])
     }
+    
 }

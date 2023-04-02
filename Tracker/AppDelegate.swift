@@ -13,16 +13,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        var window = UIWindow(frame: UIScreen.main.bounds)
-        
-        // Create a view controller
-        let viewController = TabBarController()
-        
-        // Set the view controller as the window's root view controller
-        window.rootViewController = viewController
-        
-        // Make the window visible
-        window.makeKeyAndVisible()
+//        var window = UIWindow(frame: UIScreen.main.bounds)
+//        
+//        // Create a view controller
+//        let viewController = TabBarController()
+//        
+//        // Set the view controller as the window's root view controller
+//        window.rootViewController = viewController
+//        
+//        // Make the window visible
+//        window.makeKeyAndVisible()
         
         return true
     }

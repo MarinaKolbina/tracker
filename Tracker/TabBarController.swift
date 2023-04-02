@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class TabBarController: UITabBarController {
+final class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,15 +16,12 @@ class TabBarController: UITabBarController {
         //Create items
         
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 182))
-        view.addSubview(navBar)
-        navBar.translatesAutoresizingMaskIntoConstraints = false
         
         let searchTextField = UISearchTextField()
         searchTextField.backgroundColor = UIColor(named: "grey_for_searchBar")
         searchTextField.placeholder = "Поиск"
         let leftButton = UIBarButtonItem(customView: searchTextField)
         navBar.topItem?.setLeftBarButton(leftButton, animated: false)
-        view.addSubview(searchTextField)
 
         let datePicker = UIDatePicker()
         datePicker.backgroundColor = .white
@@ -33,32 +30,47 @@ class TabBarController: UITabBarController {
         datePicker.preferredDatePickerStyle = .compact
 //        let rightButton = UIBarButtonItem(customView: datePicker)
 //        navBar.topItem?.setRightBarButton(rightButton, animated: false)
-        view.addSubview(datePicker)
         
-        let button = UIButton()
-        let image = UIImage()
-        button.setImage(UIImage(named: "plusIcon"), for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        navBar.topItem?.leftBarButtonItem = UIBarButtonItem(customView: button)
-        view.addSubview(button)
+        let plusButton = UIButton.systemButton(
+            with: UIImage(named: "plusIcon")!,
+            target: self,
+            action: #selector(didTapPlusButton)
+            )
+//        let image = UIImage()
+//        button.setImage(UIImage(named: "plusIcon"), for: .normal)
+        navBar.topItem?.leftBarButtonItem = UIBarButtonItem(customView: plusButton)
         
         let title = UILabel()
         title.text = "Трекеры"
         title.font = UIFont(name:"HelveticaNeue-Bold", size: 34.0)
         title.textColor = .black
         navBar.topItem?.titleView = title
-        view.addSubview(title)
         
         let imageView = UIImageView(image: UIImage(named: "starIcon"))
-        view.addSubview(imageView)
         
         let titleImage = UILabel()
         titleImage.text = "Что будем отслеживать?"
         titleImage.font = UIFont(name:"HelveticaNeue-Bold", size: 12.0)
         titleImage.textColor = .black
+
+        
+        
+        
+        //Add subviews
+        view.addSubview(navBar)
+        view.addSubview(searchTextField)
+        view.addSubview(datePicker)
+        view.addSubview(plusButton)
+        view.addSubview(title)
+        view.addSubview(imageView)
         view.addSubview(titleImage)
 
+
+        
         // Add constraints
+        
+        navBar.translatesAutoresizingMaskIntoConstraints = false
+
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -83,12 +95,12 @@ class TabBarController: UITabBarController {
             title.bottomAnchor.constraint(equalTo: searchTextField.topAnchor, constant: -7)
         ])
         
-        button.translatesAutoresizingMaskIntoConstraints = false
+        plusButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            button.widthAnchor.constraint(equalToConstant: 19),
-            button.heightAnchor.constraint(equalToConstant: 18),
-            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            button.bottomAnchor.constraint(equalTo: title.topAnchor, constant: -13)
+            plusButton.widthAnchor.constraint(equalToConstant: 19),
+            plusButton.heightAnchor.constraint(equalToConstant: 18),
+            plusButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            plusButton.bottomAnchor.constraint(equalTo: title.topAnchor, constant: -13)
         ])
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -102,7 +114,9 @@ class TabBarController: UITabBarController {
             titleImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleImage.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60)
         ])
+        
 
+        
         
         // Create two view controllers to display in the tab bar
         let firstVC = UIViewController()
@@ -117,6 +131,33 @@ class TabBarController: UITabBarController {
         // Set the view controllers to display in the tab bar
         viewControllers = [firstVC, secondVC]
     }
+    
+    
+    //Methods
+    
+//    func newTracker() {
+//        MakeNewTrackerViewController()
+////            tabBarController?.dismiss(animated: true)
+////            guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+////            window.rootViewController = SplashViewController()
+//    }
+//
+//
+//    @objc
+//    func didTapButton() {
+//        newTracker()
+//    }
+    
+    
+    @objc func didTapPlusButton() {
+        let makeNewTrackerViewController = MakeNewTrackerViewController()
+        let navigationController = UINavigationController(rootViewController: makeNewTrackerViewController)
+//        navigationController?.pushViewController(makeNewTrackerViewController, animated: true)
+        makeNewTrackerViewController.modalPresentationStyle = .overFullScreen
+        present(navigationController, animated: true, completion: nil)
+    }
+
+
     
 }
 
