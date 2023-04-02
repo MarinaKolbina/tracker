@@ -11,49 +11,60 @@ import UIKit
 class MakeNewTrackerViewController: UIViewController {
     
     override func viewDidLoad() {
-         super.viewDidLoad()
-        
+        super.viewDidLoad()
 
         view.backgroundColor = .white
-        
+        title = "Создание трекера"
+
         //Create items
         let behaviorButton = UIButton()
-        behaviorButton.tintColor = .black
+        behaviorButton.backgroundColor = .black
+        behaviorButton.setTitleColor(.white, for: .normal)
+        behaviorButton.setTitle("Привычка", for: .normal)
+        behaviorButton.addTarget(self, action: #selector(didTapBehaviorButton), for: .touchUpInside)
         view.addSubview(behaviorButton)
 
         let irregularEventButton = UIButton()
-        irregularEventButton.tintColor = .black
+        irregularEventButton.backgroundColor = .black
+        irregularEventButton.setTitleColor(.white, for: .normal)
+        irregularEventButton.setTitle("Нерегулярное событие", for: .normal)
+        irregularEventButton.addTarget(self, action: #selector(didTapIrregularEventButton), for: .touchUpInside)
         view.addSubview(irregularEventButton)
 
-        let title = UILabel()
-        title.text = "Создание трекера"
-        title.font = UIFont(name:"HelveticaNeue-Bold", size: 16.0)
-        title.textColor = .black
-        view.addSubview(title)
-
         behaviorButton.translatesAutoresizingMaskIntoConstraints = false
+        behaviorButton.layer.cornerRadius = 16
         NSLayoutConstraint.activate([
-            behaviorButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 335),
-            behaviorButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            behaviorButton.widthAnchor.constraint(equalToConstant: 335),
+            behaviorButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            behaviorButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            behaviorButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             behaviorButton.heightAnchor.constraint(equalToConstant: 60)
         ])
 
         irregularEventButton.translatesAutoresizingMaskIntoConstraints = false
+        irregularEventButton.layer.cornerRadius = 16
         NSLayoutConstraint.activate([
-            irregularEventButton.topAnchor.constraint(equalTo: behaviorButton.bottomAnchor, constant: -16),
-            irregularEventButton.centerYAnchor.constraint(equalTo: behaviorButton.centerYAnchor),
-            irregularEventButton.widthAnchor.constraint(equalToConstant: 335),
+            irregularEventButton.topAnchor.constraint(equalTo: behaviorButton.bottomAnchor, constant: 16),
+            irregularEventButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            irregularEventButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             irregularEventButton.heightAnchor.constraint(equalToConstant: 60)
         ])
-        
-        title.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            title.topAnchor.constraint(equalTo: behaviorButton.bottomAnchor, constant: -16),
-            title.centerYAnchor.constraint(equalTo: behaviorButton.centerYAnchor),
-            title.widthAnchor.constraint(equalToConstant: 335),
-            title.heightAnchor.constraint(equalToConstant: 60)
-        ])
     }
+    
+    @objc func didTapBehaviorButton() {
+        let NewBehaviorViewController = NewBehaviorViewController()
+        let navigationController = UINavigationController(rootViewController: NewBehaviorViewController)
+//        navigationController?.pushViewController(makeNewTrackerViewController, animated: true)
+        NewBehaviorViewController.modalPresentationStyle = .overFullScreen
+        present(navigationController, animated: true, completion: nil)
+    }
+    
+    @objc func didTapIrregularEventButton() {
+        let NewIrregularEventViewController = NewIrregularEventViewController()
+        let navigationController = UINavigationController(rootViewController: NewIrregularEventViewController)
+//        navigationController?.pushViewController(makeNewTrackerViewController, animated: true)
+        NewIrregularEventViewController.modalPresentationStyle = .overFullScreen
+        present(navigationController, animated: true, completion: nil)
+    }
+
     
 }

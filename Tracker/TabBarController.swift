@@ -36,8 +36,6 @@ final class TabBarController: UITabBarController {
             target: self,
             action: #selector(didTapPlusButton)
             )
-//        let image = UIImage()
-//        button.setImage(UIImage(named: "plusIcon"), for: .normal)
         navBar.topItem?.leftBarButtonItem = UIBarButtonItem(customView: plusButton)
         
         let title = UILabel()
@@ -54,8 +52,6 @@ final class TabBarController: UITabBarController {
         titleImage.textColor = .black
 
         
-        
-        
         //Add subviews
         view.addSubview(navBar)
         view.addSubview(searchTextField)
@@ -64,11 +60,8 @@ final class TabBarController: UITabBarController {
         view.addSubview(title)
         view.addSubview(imageView)
         view.addSubview(titleImage)
-
-
         
         // Add constraints
-        
         navBar.translatesAutoresizingMaskIntoConstraints = false
 
         datePicker.translatesAutoresizingMaskIntoConstraints = false
@@ -115,9 +108,6 @@ final class TabBarController: UITabBarController {
             titleImage.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 60)
         ])
         
-
-        
-        
         // Create two view controllers to display in the tab bar
         let firstVC = UIViewController()
         firstVC.view.backgroundColor = .white
@@ -135,20 +125,6 @@ final class TabBarController: UITabBarController {
     
     //Methods
     
-//    func newTracker() {
-//        MakeNewTrackerViewController()
-////            tabBarController?.dismiss(animated: true)
-////            guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-////            window.rootViewController = SplashViewController()
-//    }
-//
-//
-//    @objc
-//    func didTapButton() {
-//        newTracker()
-//    }
-    
-    
     @objc func didTapPlusButton() {
         let makeNewTrackerViewController = MakeNewTrackerViewController()
         let navigationController = UINavigationController(rootViewController: makeNewTrackerViewController)
@@ -156,6 +132,8 @@ final class TabBarController: UITabBarController {
         makeNewTrackerViewController.modalPresentationStyle = .overFullScreen
         present(navigationController, animated: true, completion: nil)
     }
+    
+    
 
 
     
