@@ -20,24 +20,84 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
         return table
     }()
     
+    let textField: UITextField = {
+        let field = TextField()
+        field.placeholder = "Введите название трекера"
+        field.backgroundColor = UIColor(named: "grey_for_textField")
+        field.layer.cornerRadius = 16
+        field.translatesAutoresizingMaskIntoConstraints = false
+        return field
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         title = "Новая привычка"
         
-        let textField = TextField()
-        textField.placeholder = "Введите название трекера"
-        textField.backgroundColor = UIColor(named: "grey_for_textField")
-        view.addSubview(textField)
+        //Добавим скроллвью
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         
+        //Добавим стеквью
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 50
+        stackView.alignment = .center
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        //Иерархия вью
+        view.addSubview(scrollView)
+        scrollView.addSubview(stackView)
+        scrollView.addSubview(textField)
+        stackView.addArrangedSubview(tableView)
+        
+//        let emojiCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+//        emojiCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+//        
+//        NSLayoutConstraint.activate([
+//            emojiCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+//            emojiCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+//            emojiCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            emojiCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+//        ])
+//        emojiCollectionView.dataSource = self
+        
+        
+//        stackView.addArrangedSubview(emojiCollectionView)
+//
+//        let colorCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+//        stackView.addArrangedSubview(colorCollectionView)
+        
+//        let cancelButton = UIButton()
+//
+//        stackView.addArrangedSubview(cancelButton)
+//
+//
+//        let createButton = UIButton()
+//
+//        stackView.addArrangedSubview(createButton)
+//
 
-        // Регистрируем класс UITableViewCell для ячейки таблицы
+        
         tableView.dataSource = self
         tableView.delegate = self
         
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.layer.cornerRadius = 16
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+        ])
+        
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 38),
             textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -45,14 +105,12 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
             textField.heightAnchor.constraint(equalToConstant: 75)
         ])
         
-        view.addSubview(tableView)
-        
         NSLayoutConstraint.activate([
-                    tableView.topAnchor.constraint(equalTo:textField.bottomAnchor, constant: 24),
-                    tableView.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-                    tableView.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-                    tableView.bottomAnchor.constraint(equalTo:textField.bottomAnchor, constant: 174)
-                ])
+            tableView.topAnchor.constraint(equalTo:textField.bottomAnchor, constant: 24),
+            tableView.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            tableView.bottomAnchor.constraint(equalTo:textField.bottomAnchor, constant: 174)
+        ])
 
         
     }
