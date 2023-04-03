@@ -51,7 +51,7 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
                     tableView.topAnchor.constraint(equalTo:textField.bottomAnchor, constant: 24),
                     tableView.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
                     tableView.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-                    tableView.bottomAnchor.constraint(equalTo:view.safeAreaLayoutGuide.bottomAnchor),
+                    tableView.bottomAnchor.constraint(equalTo:textField.bottomAnchor, constant: 174)
                 ])
 
         
