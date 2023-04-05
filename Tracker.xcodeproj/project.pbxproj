@@ -19,6 +19,7 @@
 		B37FCDD029DB565C009E3C1D /* SupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37FCDCF29DB565C009E3C1D /* SupplementaryView.swift */; };
 		B37FCDD229DB6D7E009E3C1D /* ColorsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37FCDD129DB6D7E009E3C1D /* ColorsCollectionView.swift */; };
 		B37FCDD429DB783A009E3C1D /* DaysOfTheWeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37FCDD329DB783A009E3C1D /* DaysOfTheWeekViewController.swift */; };
+		B37FCDD629DCBD54009E3C1D /* NewTrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37FCDD529DCBD54009E3C1D /* NewTrackerCell.swift */; };
 		B3DBC87429D20F920042CFB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DBC87329D20F920042CFB0 /* AppDelegate.swift */; };
 		B3DBC87629D20F920042CFB0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DBC87529D20F920042CFB0 /* SceneDelegate.swift */; };
 		B3DBC87829D20F920042CFB0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DBC87729D20F920042CFB0 /* ViewController.swift */; };
@@ -39,6 +40,7 @@
 		B37FCDCF29DB565C009E3C1D /* SupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
 		B37FCDD129DB6D7E009E3C1D /* ColorsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsCollectionView.swift; sourceTree = "<group>"; };
 		B37FCDD329DB783A009E3C1D /* DaysOfTheWeekViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysOfTheWeekViewController.swift; sourceTree = "<group>"; };
+		B37FCDD529DCBD54009E3C1D /* NewTrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerCell.swift; sourceTree = "<group>"; };
 		B3DBC87029D20F920042CFB0 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3DBC87329D20F920042CFB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B3DBC87529D20F920042CFB0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				B368728E29D85C8100FF0E70 /* TabBarController.swift */,
 				B368729429D8A65A00FF0E70 /* MakeNewTrackerViewController.swift */,
 				B368729629D9ACD600FF0E70 /* NewBehaviorViewController.swift */,
+				B37FCDD529DCBD54009E3C1D /* NewTrackerCell.swift */,
 				B368729829D9ACFA00FF0E70 /* NewIrregularEventViewController.swift */,
 				B368729A29DA00C600FF0E70 /* Models.swift */,
 				B3DBC87C29D20F930042CFB0 /* Assets.xcassets */,
@@ -183,6 +186,7 @@
 				B3DBC87829D20F920042CFB0 /* ViewController.swift in Sources */,
 				B368729E29DA102200FF0E70 /* TextField.swift in Sources */,
 				B37FCDD229DB6D7E009E3C1D /* ColorsCollectionView.swift in Sources */,
+				B37FCDD629DCBD54009E3C1D /* NewTrackerCell.swift in Sources */,
 				B368728F29D85C8100FF0E70 /* TabBarController.swift in Sources */,
 				B368729729D9ACD600FF0E70 /* NewBehaviorViewController.swift in Sources */,
 				B3DBC87429D20F920042CFB0 /* AppDelegate.swift in Sources */,

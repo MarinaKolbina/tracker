@@ -126,6 +126,9 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
         // Получаем ячейку таблицы
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyCell", for: indexPath)
         
+        cell.backgroundColor = .clear
+        cell.selectionStyle = .none
+        
         // Настраиваем текст ячейки
         if indexPath.row == 0 {
             cell.textLabel?.text = "Категория"
