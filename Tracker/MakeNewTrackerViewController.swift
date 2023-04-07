@@ -10,6 +10,28 @@ import UIKit
 
 class MakeNewTrackerViewController: UIViewController {
     
+    var behaviorButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .black
+        button.setTitleColor(.white, for: .normal)
+        button.setTitle("Привычка", for: .normal)
+        button.addTarget(self, action: #selector(didTapBehaviorButton), for: .touchUpInside)
+        button.layer.cornerRadius = 16
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    var irregularEventButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .black
+        button.setTitleColor(.white, for: .normal)
+        button.setTitle("Нерегулярное событие", for: .normal)
+        button.addTarget(self, action: #selector(didTapIrregularEventButton), for: .touchUpInside)
+        button.layer.cornerRadius = 16
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -17,32 +39,15 @@ class MakeNewTrackerViewController: UIViewController {
         title = "Создание трекера"
 
         //Create items
-        let behaviorButton = UIButton()
-        behaviorButton.backgroundColor = .black
-        behaviorButton.setTitleColor(.white, for: .normal)
-        behaviorButton.setTitle("Привычка", for: .normal)
-        behaviorButton.addTarget(self, action: #selector(didTapBehaviorButton), for: .touchUpInside)
         view.addSubview(behaviorButton)
-
-        let irregularEventButton = UIButton()
-        irregularEventButton.backgroundColor = .black
-        irregularEventButton.setTitleColor(.white, for: .normal)
-        irregularEventButton.setTitle("Нерегулярное событие", for: .normal)
-        irregularEventButton.addTarget(self, action: #selector(didTapIrregularEventButton), for: .touchUpInside)
         view.addSubview(irregularEventButton)
 
-        behaviorButton.translatesAutoresizingMaskIntoConstraints = false
-        behaviorButton.layer.cornerRadius = 16
         NSLayoutConstraint.activate([
             behaviorButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             behaviorButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             behaviorButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            behaviorButton.heightAnchor.constraint(equalToConstant: 60)
-        ])
-
-        irregularEventButton.translatesAutoresizingMaskIntoConstraints = false
-        irregularEventButton.layer.cornerRadius = 16
-        NSLayoutConstraint.activate([
+            behaviorButton.heightAnchor.constraint(equalToConstant: 60),
+            
             irregularEventButton.topAnchor.constraint(equalTo: behaviorButton.bottomAnchor, constant: 16),
             irregularEventButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             irregularEventButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
@@ -65,6 +70,4 @@ class MakeNewTrackerViewController: UIViewController {
         NewIrregularEventViewController.modalPresentationStyle = .overFullScreen
         present(navigationController, animated: true, completion: nil)
     }
-
-    
 }

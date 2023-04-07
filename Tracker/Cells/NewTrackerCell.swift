@@ -20,6 +20,15 @@ class NewTrackerCell: UIViewController {
         return view
     }()
     
+    let tinyView: UIView = {
+        let tinyView = UIView()
+        tinyView.backgroundColor = UIColor.white.withAlphaComponent(0.3)
+        tinyView.layer.cornerRadius = 11
+        tinyView.translatesAutoresizingMaskIntoConstraints = false
+        return tinyView
+    }()
+    
+    
     let emojiLabel: UILabel = {
         let label = UILabel()
         label.text = "😀"
@@ -68,6 +77,7 @@ class NewTrackerCell: UIViewController {
         button.backgroundColor = UIColor(named: "green_for_tracker")
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
+        button.imageView?.tintColor = .white
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         return button
     }()
@@ -79,6 +89,7 @@ class NewTrackerCell: UIViewController {
         
         emojiLabel.frame = trackerBackgroundView.bounds
         
+        trackerBackgroundView.addSubview(tinyView)
         trackerBackgroundView.addSubview(emojiLabel)
         trackerBackgroundView.addSubview(titleLabel)
         
@@ -92,6 +103,12 @@ class NewTrackerCell: UIViewController {
         
         
         NSLayoutConstraint.activate([
+            
+            tinyView.centerXAnchor.constraint(equalTo: emojiLabel.centerXAnchor),
+            tinyView.centerYAnchor.constraint(equalTo: emojiLabel.centerYAnchor),
+            tinyView.heightAnchor.constraint(equalToConstant: 24),
+            tinyView.widthAnchor.constraint(equalToConstant: 24),
+            
             emojiLabel.leadingAnchor.constraint(equalTo: trackerBackgroundView.leadingAnchor, constant: 12),
             emojiLabel.topAnchor.constraint(equalTo: trackerBackgroundView.topAnchor, constant: 12),
             
