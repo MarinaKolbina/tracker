@@ -53,34 +53,6 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
         scrollView.addSubview(textField)
         stackView.addArrangedSubview(tableView)
         
-//        let emojiCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-//        emojiCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-//        
-//        NSLayoutConstraint.activate([
-//            emojiCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-//            emojiCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-//            emojiCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            emojiCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-//        ])
-//        emojiCollectionView.dataSource = self
-        
-        
-//        stackView.addArrangedSubview(emojiCollectionView)
-//
-//        let colorCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-//        stackView.addArrangedSubview(colorCollectionView)
-        
-//        let cancelButton = UIButton()
-//
-//        stackView.addArrangedSubview(cancelButton)
-//
-//
-//        let createButton = UIButton()
-//
-//        stackView.addArrangedSubview(createButton)
-//
-
-        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -89,23 +61,17 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
-        
-        NSLayoutConstraint.activate([
+       
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-        ])
-        
-        NSLayoutConstraint.activate([
+       
             textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 38),
             textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            textField.heightAnchor.constraint(equalToConstant: 75)
-        ])
-        
-        NSLayoutConstraint.activate([
+            textField.heightAnchor.constraint(equalToConstant: 75),
+       
             tableView.topAnchor.constraint(equalTo:textField.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
@@ -134,9 +100,17 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
             cell.textLabel?.text = "Категория"
         } else {
             cell.textLabel?.text = "Расписание"
+            cell.accessoryType = .disclosureIndicator // добавляем пользовательский индикатор доступности
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 1 {
+            let daysOfTheWeekViewController = DaysOfTheWeekViewController()
+            navigationController?.pushViewController(daysOfTheWeekViewController, animated: true) //или тут лучше презент?
+        }
     }
     
 }

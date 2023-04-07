@@ -42,7 +42,7 @@ class DaysOfTheWeekViewController: UIViewController {
         view.addSubview(readyButton)
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.heightAnchor.constraint(equalToConstant: 525),
@@ -77,7 +77,6 @@ extension DaysOfTheWeekViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyTableViewCell", for: indexPath) as! MyTableViewCell
         
-        // Настраиваем ячейку
         cell.configure()
         cell.textLabel?.text = daysOfWeek[indexPath.row]
         
@@ -90,31 +89,3 @@ extension DaysOfTheWeekViewController: UITableViewDelegate {
         return 75
     }
 }
-
-//class MyTableViewCell: UITableViewCell {
-//    let dayOfWeek = UILabel()
-//    let switchControl = UISwitch()
-//
-//    func configure() {
-//        dayOfWeek.translatesAutoresizingMaskIntoConstraints = false
-//        switchControl.translatesAutoresizingMaskIntoConstraints = false
-//
-//        backgroundColor = .clear
-//        selectionStyle = .none
-//        contentView.addSubview(dayOfWeek)
-//        contentView.addSubview(switchControl)
-//
-//        switchControl.isOn = false
-//        switchControl.onTintColor = UIColor(named: "blue_YP")
-//
-//        NSLayoutConstraint.activate([
-//            dayOfWeek.topAnchor.constraint(equalTo: contentView.topAnchor),
-//            dayOfWeek.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-//            dayOfWeek.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            dayOfWeek.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-//            switchControl.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-//            switchControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
-//        ])
-//
-//    }
-//}
