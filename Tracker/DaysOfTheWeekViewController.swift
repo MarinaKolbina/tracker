@@ -1,9 +1,17 @@
 import Foundation
 import UIKit
 
+protocol DaysOfTheWeekDelegate: AnyObject {
+    func didChooseDays(days: [String])
+}
+
 class DaysOfTheWeekViewController: UIViewController {
     
     let daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+    let shortDaysOfWeek = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
+    
+    var selectedDays: [String] = []
+    weak var delegate: DaysOfTheWeekDelegate?
     
     var tableView: UITableView = {
         let table = UITableView()
@@ -49,15 +57,18 @@ class DaysOfTheWeekViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        
     }
     
     @objc func didTapReadyButton() {
-        let NewBehaviorViewController = NewBehaviorViewController()
-        //что-то другое тут должно быть
-        //        let navigationController = UINavigationController(rootViewController: NewBehaviorViewController)
-        //        NewBehaviorViewController.modalPresentationStyle = .overFullScreen
-        //        present(navigationController, animated: true, completion: nil)
+        let cells = tableView.visibleCells as! Array<MyTableViewCell>
+        for i in 0...cells.count - 1 {
+            if cells[i].switchControl.isOn {
+                selectedDays.append(shortDaysOfWeek[i])
+            }
+        }
+        
+        delegate?.didChooseDays(days: selectedDays)
+        dismiss(animated: true, completion: nil)
     }
 }
 

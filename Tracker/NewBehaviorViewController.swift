@@ -3,6 +3,8 @@ import UIKit
 
 class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    var selectedDays: [String] = []
+    
     let tableView: UITableView = {
         let table = UITableView()
         table.rowHeight = 75
@@ -87,10 +89,14 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Получаем ячейку таблицы
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MyCell", for: indexPath)
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "MyCell", for: indexPath)
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "MyCell")
         
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
+        
+        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        cell.detailTextLabel?.textColor = .gray
         
         // Настраиваем текст ячейки
         if indexPath.row == 0 {
@@ -98,6 +104,7 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
         } else {
             cell.textLabel?.text = "Расписание"
             cell.accessoryType = .disclosureIndicator // добавляем пользовательский индикатор доступности
+            cell.detailTextLabel?.text = selectedDays.joined(separator: ", ")
         }
         
         return cell
@@ -106,8 +113,19 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 1 {
             let daysOfTheWeekViewController = DaysOfTheWeekViewController()
-            navigationController?.pushViewController(daysOfTheWeekViewController, animated: true) //или тут лучше презент?
+            daysOfTheWeekViewController.delegate = self
+            present(daysOfTheWeekViewController, animated: true)
+//            navigationController?.pushViewController(daysOfTheWeekViewController, animated: true) //или тут лучше презент?
         }
     }
     
+}
+
+extension NewBehaviorViewController: DaysOfTheWeekDelegate {
+    func didChooseDays(days: [String]) {
+        // сохраняем выбранные дни в свойство
+        selectedDays = days
+        // обновляем ячейку "Расписание"
+        tableView.reloadData()
+    }
 }
