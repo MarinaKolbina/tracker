@@ -1,10 +1,3 @@
-//
-//  DaysOfTheWeekViewController.swift
-//  Tracker
-//
-//  Created by Marina Kolbina on 03/04/2023.
-//
-
 import Foundation
 import UIKit
 
@@ -66,7 +59,6 @@ class DaysOfTheWeekViewController: UIViewController {
         //        NewBehaviorViewController.modalPresentationStyle = .overFullScreen
         //        present(navigationController, animated: true, completion: nil)
     }
-    
 }
 
 extension DaysOfTheWeekViewController: UITableViewDataSource {

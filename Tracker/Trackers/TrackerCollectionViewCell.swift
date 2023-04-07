@@ -7,10 +7,8 @@
 
 import Foundation
 import UIKit
-
-import UIKit
-
-class NewTrackerCell: UIViewController {
+ 
+class TrackerCollectionViewCell: UICollectionViewCell {
     
     let trackerBackgroundView: UIView = {
         let view = UIView()
@@ -82,10 +80,10 @@ class NewTrackerCell: UIViewController {
         return button
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        view.backgroundColor = .white
+        contentView.backgroundColor = .white
         
         emojiLabel.frame = trackerBackgroundView.bounds
         
@@ -99,8 +97,7 @@ class NewTrackerCell: UIViewController {
         mainStackView.addArrangedSubview(trackerBackgroundView)
         mainStackView.addArrangedSubview(bottomStackView)
         
-        view.addSubview(mainStackView)
-        
+        contentView.addSubview(mainStackView)
         
         NSLayoutConstraint.activate([
             
@@ -121,16 +118,19 @@ class NewTrackerCell: UIViewController {
             roundButton.widthAnchor.constraint(equalToConstant: 34),
             roundButton.heightAnchor.constraint(equalToConstant: 34),
             
-            mainStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             mainStackView.heightAnchor.constraint(equalToConstant: 132),
             mainStackView.widthAnchor.constraint(equalToConstant: 167),
             
         ])
-        
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     @objc func buttonTapped() {
+        roundButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+        roundButton.layer.opacity = 0.3
         print("Button tapped!")
     }
 }
-

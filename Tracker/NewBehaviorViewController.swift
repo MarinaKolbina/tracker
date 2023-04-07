@@ -1,10 +1,3 @@
-//
-//  NewBehaviorViewController.swift
-//  Tracker
-//
-//  Created by Marina Kolbina on 02/04/2023.
-//
-
 import Foundation
 import UIKit
 
@@ -29,23 +22,27 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
         return field
     }()
     
+    let stackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 50
+        stack.alignment = .center
+        stack.distribution = .fillEqually
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
+    let scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        return scroll
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         title = "Новая привычка"
-        
-        //Добавим скроллвью
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        
-        //Добавим стеквью
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 50
-        stackView.alignment = .center
-        stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         //Иерархия вью
         view.addSubview(scrollView)
@@ -114,4 +111,3 @@ class NewBehaviorViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
 }
-

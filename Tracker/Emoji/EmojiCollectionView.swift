@@ -10,7 +10,7 @@ import UIKit
 
 class EmojiCollectionView: UIViewController, UICollectionViewDelegate {
     
-    private let emojis = [
+    let emojis = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",
         "🥦", "🏓", "🥇", "🎸", "🏝", "😪",
