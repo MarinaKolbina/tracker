@@ -4,10 +4,10 @@
 //
 //  Created by Marina Kolbina on 01/04/2023.
 //
-
+ 
 import Foundation
 import UIKit
-
+ 
 final class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
@@ -26,3 +26,15 @@ final class TabBarController: UITabBarController {
         viewControllers = [firstVC, secondVC]
     }
 }
+ 
+// MARK: - NewBehaviorViewControllerDelegate
+ 
+extension TabBarController: NewBehaviorViewControllerDelegate {
+    func dismissToTrackerCollectionViewController() {
+        dismiss(animated: true) {
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+}
+
+//В методе viewDidLoad он создает два экземпляра view controller'ов: TrackerCollectionViewController и UIViewController. Оба view controller'а получают белый фон и устанавливаются как элементы вкладок в таббаре, каждый с своим изображением и названием. В расширении TabBarController реализуется делегат NewBehaviorViewControllerDelegate. Метод dismissToTrackerCollectionViewController() закрывает текущий view controller, а затем модально закрывает все view controller'ы, которые были открыты поверх него, чтобы вернуть пользователя на TrackerCollectionViewController.

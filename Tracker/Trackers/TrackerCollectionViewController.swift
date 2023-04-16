@@ -4,11 +4,11 @@
 //
 //  Created by Marina Kolbina on 07/04/2023.
 //
-
+ 
 import Foundation
 import UIKit
-
-
+ 
+ 
 class TrackerCollectionViewController: UIViewController, UICollectionViewDelegate {
     var plusButton: UIButton = {
         let button = UIButton.systemButton(
@@ -47,14 +47,6 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
         return view
     }()
     
-    //    var searchText: UISearchTextField = {
-    //        let searchTextField = UISearchTextField()
-    //        searchTextField.backgroundColor = UIColor(named: "grey_for_searchBar")
-    //        searchTextField.placeholder = "Поиск"
-    //        searchTextField.translatesAutoresizingMaskIntoConstraints = false
-    //        return searchTextField
-    //    }()
-    
     var imageView: UIImageView = {
         let image = UIImageView(image: UIImage(named: "starIcon"))
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -77,10 +69,10 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     }()
     
     private let trackers = ["First_init", "Second_init", "Third_init", "Fourth_init", "Fifth_init", "First_init", "Second_init", "Third_init", "Fourth_init", "Fifth_init"]
-    //    private let trackers: Array<String> = []
+//        private let trackers: Array<String> = []
     private var visibleTrackers: Array<String> = []
     private let emojis: Array = {
-        let emojiCollection = EmojiCollectionView()
+        let emojiCollection = EmojiCollectionViewController()
         return emojiCollection.emojis
     }()
     
@@ -98,8 +90,6 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     @objc func didTapPlusButton() {
         let makeNewTrackerViewController = MakeNewTrackerViewController()
         let navigationController = UINavigationController(rootViewController: makeNewTrackerViewController)
-        //        navigationController?.pushViewController(makeNewTrackerViewController, animated: true)
-        makeNewTrackerViewController.modalPresentationStyle = .overFullScreen
         present(navigationController, animated: true, completion: nil)
     }
     
@@ -109,7 +99,7 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
         trackersCollectionView.isHidden = trackers.isEmpty
     }
 }
-
+ 
 extension TrackerCollectionViewController {
     func setUp() {
         //Create items
@@ -180,9 +170,9 @@ extension TrackerCollectionViewController {
         ])
     }
 }
-
+ 
 // MARK: - UICollectionViewDataSource
-
+ 
 extension TrackerCollectionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -226,9 +216,9 @@ extension TrackerCollectionViewController: UICollectionViewDataSource {
         return view
     }
 }
-
+ 
 // MARK: - UICollectionViewDelegateFlowLayout
-
+ 
 extension TrackerCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
@@ -260,9 +250,9 @@ extension TrackerCollectionViewController: UICollectionViewDelegateFlowLayout {
         return 0
     }
 }
-
+ 
 // MARK: - UISearchBarDelegate
-
+ 
 extension TrackerCollectionViewController: UISearchBarDelegate {
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.setShowsCancelButton(true, animated: true)
@@ -282,3 +272,20 @@ extension TrackerCollectionViewController: UISearchBarDelegate {
         trackersCollectionView.reloadData()
     }
 }
+ 
+//В классе определены следующие свойства:
+
+//plusButton - кнопка, инициализированная как UIButton с изображением и методом-обработчиком нажатия;
+//mainTitle - заголовок, инициализированный как UILabel с текстом, шрифтом и цветом;
+//datePicker - виджет выбора даты, инициализированный как UIDatePicker с определенными свойствами;
+//searchBar - строка поиска, инициализированная как UISearchBar с текстом-подсказкой и стилем;
+//imageView - изображение, инициализированное как UIImageView с изображением;
+//littleTitle - подзаголовок, инициализированный как UILabel с текстом, шрифтом и цветом;
+//navigationBar - строка навигации, инициализированная как UINavigationBar.
+//Также в классе определены массивы trackers и emojis, содержащие определенные строки и эмодзи.
+//
+//В методе viewDidLoad() вызываются методы setUp(), applyLayOut() и checkAvailableTrackers(), а также задаются определенные свойства коллекции trackersCollectionView.
+//
+//Класс также содержит ряд методов, в том числе didTapPlusButton(), checkAvailableTrackers(), setUp() и applyLayOut().
+//
+//Дополнительно класс расширяется методами протоколов UISearchBarDelegate, UICollectionViewDataSource и UICollectionViewDelegateFlowLayout.

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B30847E029DF0F2C0022BDF4 /* MyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30847DF29DF0F2C0022BDF4 /* MyTableViewCell.swift */; };
+		B30847E029DF0F2C0022BDF4 /* WeekdayViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30847DF29DF0F2C0022BDF4 /* WeekdayViewCell.swift */; };
 		B368728F29D85C8100FF0E70 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368728E29D85C8100FF0E70 /* TabBarController.swift */; };
 		B368729129D8600F00FF0E70 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729029D8600F00FF0E70 /* SplashViewController.swift */; };
 		B368729529D8A65A00FF0E70 /* MakeNewTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729429D8A65A00FF0E70 /* MakeNewTrackerViewController.swift */; };
@@ -15,7 +15,7 @@
 		B368729929D9ACFA00FF0E70 /* NewIrregularEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729829D9ACFA00FF0E70 /* NewIrregularEventViewController.swift */; };
 		B368729B29DA00C600FF0E70 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729A29DA00C600FF0E70 /* Models.swift */; };
 		B368729E29DA102200FF0E70 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729D29DA102200FF0E70 /* TextField.swift */; };
-		B36872A029DAF73100FF0E70 /* EmojiCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729F29DAF73100FF0E70 /* EmojiCollectionView.swift */; };
+		B36872A029DAF73100FF0E70 /* EmojiCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729F29DAF73100FF0E70 /* EmojiCollectionViewController.swift */; };
 		B37FCDCE29DB48F1009E3C1D /* EmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37FCDCD29DB48F1009E3C1D /* EmojiCollectionViewCell.swift */; };
 		B37FCDD029DB565C009E3C1D /* SupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37FCDCF29DB565C009E3C1D /* SupplementaryView.swift */; };
 		B37FCDD229DB6D7E009E3C1D /* ColorsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37FCDD129DB6D7E009E3C1D /* ColorsCollectionView.swift */; };
@@ -31,7 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B30847DF29DF0F2C0022BDF4 /* MyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewCell.swift; sourceTree = "<group>"; };
+		B30847DF29DF0F2C0022BDF4 /* WeekdayViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayViewCell.swift; sourceTree = "<group>"; };
 		B368728E29D85C8100FF0E70 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		B368729029D8600F00FF0E70 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		B368729429D8A65A00FF0E70 /* MakeNewTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeNewTrackerViewController.swift; sourceTree = "<group>"; };
@@ -39,7 +39,7 @@
 		B368729829D9ACFA00FF0E70 /* NewIrregularEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewIrregularEventViewController.swift; sourceTree = "<group>"; };
 		B368729A29DA00C600FF0E70 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		B368729D29DA102200FF0E70 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
-		B368729F29DAF73100FF0E70 /* EmojiCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionView.swift; sourceTree = "<group>"; };
+		B368729F29DAF73100FF0E70 /* EmojiCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewController.swift; sourceTree = "<group>"; };
 		B37FCDCD29DB48F1009E3C1D /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		B37FCDCF29DB565C009E3C1D /* SupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
 		B37FCDD129DB6D7E009E3C1D /* ColorsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsCollectionView.swift; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 		B37FCDD729DEF625009E3C1D /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				B30847DF29DF0F2C0022BDF4 /* MyTableViewCell.swift */,
+				B30847DF29DF0F2C0022BDF4 /* WeekdayViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -86,7 +86,7 @@
 		B3C7394229E0937100ADD453 /* Emoji */ = {
 			isa = PBXGroup;
 			children = (
-				B368729F29DAF73100FF0E70 /* EmojiCollectionView.swift */,
+				B368729F29DAF73100FF0E70 /* EmojiCollectionViewController.swift */,
 				B37FCDCD29DB48F1009E3C1D /* EmojiCollectionViewCell.swift */,
 			);
 			path = Emoji;
@@ -223,7 +223,7 @@
 				B3C7394529E094AB00ADD453 /* TrackerCollectionViewController.swift in Sources */,
 				B37FCDD629DCBD54009E3C1D /* TrackerCollectionViewCell.swift in Sources */,
 				B368728F29D85C8100FF0E70 /* TabBarController.swift in Sources */,
-				B30847E029DF0F2C0022BDF4 /* MyTableViewCell.swift in Sources */,
+				B30847E029DF0F2C0022BDF4 /* WeekdayViewCell.swift in Sources */,
 				B368729729D9ACD600FF0E70 /* NewBehaviorViewController.swift in Sources */,
 				B3DBC87429D20F920042CFB0 /* AppDelegate.swift in Sources */,
 				B37FCDD029DB565C009E3C1D /* SupplementaryView.swift in Sources */,
@@ -231,7 +231,7 @@
 				B368729B29DA00C600FF0E70 /* Models.swift in Sources */,
 				B3DBC87629D20F920042CFB0 /* SceneDelegate.swift in Sources */,
 				B37FCDD429DB783A009E3C1D /* DaysOfTheWeekViewController.swift in Sources */,
-				B36872A029DAF73100FF0E70 /* EmojiCollectionView.swift in Sources */,
+				B36872A029DAF73100FF0E70 /* EmojiCollectionViewController.swift in Sources */,
 				B368729129D8600F00FF0E70 /* SplashViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

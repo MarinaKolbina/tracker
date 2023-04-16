@@ -4,10 +4,10 @@
 //
 //  Created by Marina Kolbina on 01/04/2023.
 //
-
+ 
 import Foundation
 import UIKit
-
+ 
 class MakeNewTrackerViewController: UIViewController {
     
     var behaviorButton: UIButton = {
@@ -34,14 +34,14 @@ class MakeNewTrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+ 
         view.backgroundColor = .white
         title = "Создание трекера"
-
+ 
         //Create items
         view.addSubview(behaviorButton)
         view.addSubview(irregularEventButton)
-
+ 
         NSLayoutConstraint.activate([
             behaviorButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             behaviorButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -56,18 +56,23 @@ class MakeNewTrackerViewController: UIViewController {
     }
     
     @objc func didTapBehaviorButton() {
-        let NewBehaviorViewController = NewBehaviorViewController()
-        let navigationController = UINavigationController(rootViewController: NewBehaviorViewController)
-//        navigationController?.pushViewController(makeNewTrackerViewController, animated: true)
-        NewBehaviorViewController.modalPresentationStyle = .overFullScreen
-        present(navigationController, animated: true, completion: nil)
+        presentBehaviorController(eventType: "Behavior")
     }
     
     @objc func didTapIrregularEventButton() {
-        let NewIrregularEventViewController = NewIrregularEventViewController()
-        let navigationController = UINavigationController(rootViewController: NewIrregularEventViewController)
-//        navigationController?.pushViewController(makeNewTrackerViewController, animated: true)
-        NewIrregularEventViewController.modalPresentationStyle = .overFullScreen
+        presentBehaviorController(eventType: "IrregularEvent")
+    }
+    
+    func presentBehaviorController(eventType: String) {
+        let newBehaviorViewController = NewBehaviorViewController()
+        newBehaviorViewController.eventType = eventType
+        newBehaviorViewController.delegate = presentingViewController as? TabBarController
+        let navigationController = UINavigationController(rootViewController: newBehaviorViewController)
+        newBehaviorViewController.modalPresentationStyle = .overFullScreen
         present(navigationController, animated: true, completion: nil)
     }
 }
+
+//Внутри класса создаются две кнопки behaviorButton и irregularEventButton, на которые назначаются обработчики нажатия. Также в классе реализуется метод presentBehaviorController, который создает экземпляр NewBehaviorViewController и устанавливает его свойство eventType равным переданному аргументу, после чего назначает делегатом контроллера presentingViewController и отображает его с помощью present(_:animated:completion:).
+
+//Метод presentBehaviorController вызывается в обработчиках нажатия кнопок behaviorButton и irregularEventButton и передает соответствующий тип события в качестве аргумента. Кроме того, класс MakeNewTrackerViewController является экраном создания нового трекера, на котором отображаются эти кнопки. В методе viewDidLoad() происходит установка фона экрана в белый цвет и добавление кнопок на экран с помощью метода addSubview(). Далее задаются констрейнты для кнопок, чтобы они были расположены по центру экрана и с некоторым расстоянием между собой.
