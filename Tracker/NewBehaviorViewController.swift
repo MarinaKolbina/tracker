@@ -1,8 +1,12 @@
 import Foundation
 import UIKit
  
-protocol NewBehaviorViewControllerDelegate: AnyObject {
+protocol NewBehaviorViewControllerDismissDelegate: AnyObject {
     func dismissToTrackerCollectionViewController()
+}
+ 
+protocol NewBehaviorViewControllerDelegate: AnyObject {
+    func didTapCreateButton(_ tracker: Tracker, section: String)
 }
  
 class NewBehaviorViewController: UIViewController {
@@ -12,8 +16,20 @@ class NewBehaviorViewController: UIViewController {
         field.placeholder = "Введите название трекера"
         field.backgroundColor = UIColor(named: "grey_for_textField")
         field.layer.cornerRadius = 16
+        field.clearButtonMode = .whileEditing
+        field.addTarget(self, action: #selector(didChangedTextField), for: .editingChanged)
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
+    }()
+    
+    var validationLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Ограничение 38 символов"
+        label.font = UIFont.systemFont(ofSize: 17)
+        label.textColor = .red
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     let stackView: UIStackView = {
@@ -116,22 +132,38 @@ class NewBehaviorViewController: UIViewController {
     
     var eventType: String?
     
-    let emojis = [
-        "🙂", "😻", "🌺", "🐶", "❤️", "😱",
-        "😇", "😡", "🥶", "🤔", "🙌", "🍔",
-        "🥦", "🏓", "🥇", "🎸", "🏝", "😪",
-    ]
+    let emojis = Constants().emojis
+    let colors = Constants().colors
     
-    //    TODO change colors order
-    let colors: [UIColor] = [.red, .orange, .yellow, .green, .blue, .purple,
-                             .brown, .cyan, .magenta, .gray, .systemPink, .systemTeal,
-                             .systemIndigo, .systemPurple, .systemYellow, .systemOrange, .systemBlue, .systemRed]
-    
+    var selectedLabel: String?
     var selectedEmoji: String?
     var selectedColor: UIColor?
     var selectedDays: [Weekday] = []
     
+    var isValidationLabelVisible = false {
+        didSet {
+            if isValidationLabelVisible {
+                stackView.insertArrangedSubview(validationLabel, at: 1)
+            } else {
+                validationLabel.removeFromSuperview()
+            }
+        }
+    }
+    
+    var isCreateButtonEnabled: Bool = false {
+        willSet {
+            if newValue {
+                createButton.backgroundColor = .black
+                createButton.isEnabled = true
+            } else {
+                createButton.backgroundColor = .gray
+                createButton.isEnabled = false
+            }
+        }
+    }
+    
     weak var delegate: NewBehaviorViewControllerDelegate?
+    weak var delegateDismiss: NewBehaviorViewControllerDismissDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,6 +174,7 @@ class NewBehaviorViewController: UIViewController {
             title = "Новая привычка"
         } else if eventType == "IrregularEvent" {
             title = "Новое нерегулярное событие"
+            selectedDays = Weekday.allCases
         }
         
         view.addSubview(scrollView)
@@ -203,28 +236,43 @@ class NewBehaviorViewController: UIViewController {
         }
     }
     
+    @objc func didChangedTextField(_ sender: UITextField) {
+        guard let text = sender.text else { return }
+        selectedLabel = text
+        isValidationLabelVisible = text.count > 38
+        checkFullForm()
+    }
+    
     @objc func cancelButtonTapped() {
-        print("cancel creation")
-        delegate?.dismissToTrackerCollectionViewController()
+        delegateDismiss?.dismissToTrackerCollectionViewController()
     }
     
     @objc func createButtonTapped() {
-        
-//       TODO for textField
-        guard let selectedLabel = textField.text else { return }
-        guard let selectedColor = selectedColor else { return }
-        guard let selectedEmoji = selectedEmoji else { return }
-        
-        let tracker = Tracker(label: selectedLabel,
-                              emoji: selectedEmoji,
-                              color: selectedColor,
-                              schedule: selectedDays
-        )
-        print("tracker created")
-        print(tracker)
-        delegate?.dismissToTrackerCollectionViewController()
+        if let selectedLabel = selectedLabel, let selectedEmoji = selectedEmoji, let selectedColor = selectedColor {
+            let tracker = Tracker(label: selectedLabel,
+                                  emoji: selectedEmoji,
+                                  color: selectedColor,
+                                  schedule: selectedDays
+            )
+            print(tracker)
+            delegate?.didTapCreateButton(tracker, section: "Важное")
+            delegateDismiss?.dismissToTrackerCollectionViewController()
+        } else {
+            return
+        }
+    }
+    
+    func checkFullForm() {
+        if let _ = selectedEmoji,
+           let _ = selectedColor,
+           let selectedLabel = selectedLabel {
+            isCreateButtonEnabled = selectedLabel != "" && !isValidationLabelVisible && selectedDays != []
+        } else {
+            isCreateButtonEnabled = false
+        }
     }
 }
+ 
  
 // MARK: - UITableViewDataSource, UITableViewDelegate
  
@@ -244,6 +292,7 @@ extension NewBehaviorViewController: UITableViewDataSource, UITableViewDelegate 
         
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Получаем ячейку таблицы
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "MyCell")
@@ -257,6 +306,9 @@ extension NewBehaviorViewController: UITableViewDataSource, UITableViewDelegate 
         // Настраиваем текст ячейки
         if indexPath.row == 0 {
             cell.textLabel?.text = "Категория"
+            // Будет доделано в следующих спринтах
+            cell.accessoryType = .disclosureIndicator
+            cell.detailTextLabel?.text = "Важное"
         } else {
             cell.textLabel?.text = "Расписание"
             cell.accessoryType = .disclosureIndicator // добавляем пользовательский индикатор доступности
@@ -326,10 +378,11 @@ extension NewBehaviorViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        isCreateButtonEnabled = true
         if collectionView == emojiCollectionView {
             if let cell = collectionView.cellForItem(at: indexPath) {
                 selectedEmoji = emojis[indexPath.row]
-//                TODO почти невидно
+//                почти невидно
 //                cell.backgroundColor = UIColor(named: "grey_for_textField")
                 cell.backgroundColor = .gray
             }
@@ -339,6 +392,7 @@ extension NewBehaviorViewController: UICollectionViewDelegateFlowLayout {
                 cell.layer.borderWidth = 2
             }
         }
+        checkFullForm()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -378,6 +432,7 @@ extension NewBehaviorViewController: DaysOfTheWeekDelegate {
         selectedDays = days
         // обновляем ячейку "Расписание"
         tableView.reloadData()
+        checkFullForm()
     }
 }
 

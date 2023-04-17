@@ -18,7 +18,7 @@ class DaysOfTheWeekViewController: UIViewController {
         return table
     }()
     
-    var readyButton: UIButton = {
+    lazy var readyButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .black
         button.setTitleColor(.white, for: .normal)
@@ -56,7 +56,7 @@ class DaysOfTheWeekViewController: UIViewController {
     }
     
     @objc func didTapReadyButton() {
-        let cells = tableView.visibleCells as! Array<WeekdayTableViewCell>
+        let cells = tableView.visibleCells as! [WeekdayTableViewCell]
         var weekDays = Set(selectedDays)
         for cell in cells {
             if cell.switchControl.isOn {

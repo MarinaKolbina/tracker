@@ -29,7 +29,7 @@ final class TabBarController: UITabBarController {
  
 // MARK: - NewBehaviorViewControllerDelegate
  
-extension TabBarController: NewBehaviorViewControllerDelegate {
+extension TabBarController: NewBehaviorViewControllerDismissDelegate {
     func dismissToTrackerCollectionViewController() {
         dismiss(animated: true) {
             self.dismiss(animated: true, completion: nil)

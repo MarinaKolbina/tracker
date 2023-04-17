@@ -9,9 +9,12 @@ import Foundation
 import UIKit
  
  
-// TOTO TrackerCategory
+struct TrackerCategory {
+    let label: String
+    let trackers: [Tracker]
+}
  
-struct TrackerRecord {
+struct TrackerRecord: Hashable {
     let trackerId: UUID
     let date: Date
 }
@@ -58,7 +61,6 @@ enum Weekday: String, CaseIterable, Comparable {
         return lhs.day.index < rhs.day.index
     }
 }
- 
 //Далее определены структуры TrackerRecord и Tracker, а также перечисление Weekday.
 
 //Структура TrackerRecord содержит два свойства: идентификатор трекера (trackerId) и дату (date).

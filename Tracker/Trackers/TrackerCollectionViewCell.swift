@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
  
+protocol TrackerCellDelegate: AnyObject {
+    func didTapRoundButton(of cell: TrackerCollectionViewCell, with tracker: Tracker)
+}
+ 
 class TrackerCollectionViewCell: UICollectionViewCell {
     
     let trackerBackgroundView: UIView = {
@@ -29,7 +33,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     
     let emojiLabel: UILabel = {
         let label = UILabel()
-        label.text = "😀"
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +41,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Поливать растения"
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -62,23 +64,46 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     
     let daysCounter: UILabel = {
         let label = UILabel()
-        label.text = "0 дней"
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    let roundButton: UIButton = {
+    lazy var roundButton: UIButton = {
         let button = UIButton(type: .custom)
         button.layer.cornerRadius = 17
         button.backgroundColor = UIColor(named: "green_for_tracker")
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.imageView?.tintColor = .white
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapRoundButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    static let identifier = "trackerCell"
+    private var days = 0 {
+        didSet {
+            let preLastDigit = days % 100 / 10
+            var dayWord = ""
+            if (preLastDigit == 1) {
+                dayWord = "дней";
+            } else {
+                let lastDigit = days % 10
+                if lastDigit == 1 {
+                    dayWord = "день"
+                } else if 2 <= lastDigit && lastDigit <= 4 {
+                    dayWord = "дня"
+                } else {
+                    dayWord = "дней"
+                }
+            }
+            daysCounter.text = "\(days) \(dayWord)"
+        }
+    }
+    private var tracker: Tracker?
+    weak var delegate: TrackerCellDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -100,7 +125,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(mainStackView)
         
         NSLayoutConstraint.activate([
-            
             tinyView.centerXAnchor.constraint(equalTo: emojiLabel.centerXAnchor),
             tinyView.centerYAnchor.constraint(equalTo: emojiLabel.centerYAnchor),
             tinyView.heightAnchor.constraint(equalToConstant: 24),
@@ -120,7 +144,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             
             mainStackView.heightAnchor.constraint(equalToConstant: 132),
             mainStackView.widthAnchor.constraint(equalToConstant: 167),
-            
         ])
     }
     
@@ -128,9 +151,38 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func buttonTapped() {
-        roundButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
-        roundButton.layer.opacity = 0.3
+    func configure(tracker: Tracker, days: Int, isDone: Bool) {
+        self.tracker = tracker
+        self.days = days
+        
+        titleLabel.text = tracker.label
+        emojiLabel.text = tracker.emoji
+        trackerBackgroundView.backgroundColor = tracker.color
+        roundButton.backgroundColor = tracker.color
+        setupRoundButtonView(isDone)
+    }
+    
+    func setupRoundButtonView(_ isDone: Bool) {
+        if isDone {
+            roundButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+            roundButton.layer.opacity = 0.3
+        } else {
+            roundButton.setImage(UIImage(systemName: "plus"), for: .normal)
+            roundButton.layer.opacity = 1
+        }
+    }
+    
+    func changeRoundButtonState(isDone: Bool) {
+        days = isDone ? days + 1 : days - 1
+        setupRoundButtonView(isDone)
+    }
+    
+    @objc
+    private func didTapRoundButton() {
         print("Button tapped!")
+        guard let tracker else { return }
+        delegate?.didTapRoundButton(of: self, with: tracker)
     }
 }
+ 
+
