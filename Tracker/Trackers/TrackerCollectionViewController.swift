@@ -133,6 +133,10 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     
     
     override func viewDidLoad() {
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        
         //Create items
         navigationBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 182)
         let leftButton = UIBarButtonItem(customView: searchBar)
@@ -199,6 +203,10 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
         visibleCategories = categories
         trackersCollectionView.reloadData()
     }
+    
+    @objc func dismissKeyboard() {
+         view.endEditing(true)
+     }
 }
  
 // MARK: - UICollectionViewDataSource

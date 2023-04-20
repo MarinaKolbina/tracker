@@ -168,6 +168,9 @@ class NewBehaviorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        
         view.backgroundColor = .white
         guard let eventType = eventType else { return }
         if eventType == "Behavior" {
@@ -175,6 +178,7 @@ class NewBehaviorViewController: UIViewController {
         } else if eventType == "IrregularEvent" {
             title = "Новое нерегулярное событие"
             selectedDays = Weekday.allCases
+            
         }
         
         view.addSubview(scrollView)
@@ -232,7 +236,9 @@ class NewBehaviorViewController: UIViewController {
             let daysOfTheWeekViewController = DaysOfTheWeekViewController()
             daysOfTheWeekViewController.delegate = self
             daysOfTheWeekViewController.selectedDays = selectedDays
-            present(daysOfTheWeekViewController, animated: true)
+            let navigationController = UINavigationController(rootViewController: daysOfTheWeekViewController)
+            daysOfTheWeekViewController.modalPresentationStyle = .overFullScreen
+            present(navigationController, animated: true, completion: nil)
         }
     }
     
@@ -260,6 +266,10 @@ class NewBehaviorViewController: UIViewController {
         } else {
             return
         }
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     func checkFullForm() {
