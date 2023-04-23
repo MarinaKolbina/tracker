@@ -135,6 +135,7 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     override func viewDidLoad() {
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGestureRecognizer)
         
         //Create items
