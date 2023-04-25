@@ -130,9 +130,12 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     }
     private var completedTrackers: Set<TrackerRecord> = []
     private var currentDate: Date = Date()
+    private let trackerStore = TrackerStore()
     
     
     override func viewDidLoad() {
+        try!  trackerStore.addNewTracker(<#T##tracker: Tracker##Tracker#>)
+    
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGestureRecognizer.cancelsTouchesInView = false
