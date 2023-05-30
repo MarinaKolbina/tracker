@@ -16,10 +16,6 @@ class SplashViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = UIColor(named: "blue_YP")
         
-        // Create a label
-//        let label = UILabel()
-//        label.text = "Яндекс Практикум бесит"
-//        label.textAlignment = .center
 
         // Create an image view
         let imageView = UIImageView(image: UIImage(named: "launchScreenLogo"))

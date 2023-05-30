@@ -9,14 +9,24 @@ import Foundation
 import UIKit
  
  
-struct TrackerCategory {
+struct TrackerCategory: Hashable{
+    let id: UUID
     let label: String
-    let trackers: [Tracker]
+    
+    init(id: UUID = UUID(), label: String) {
+        self.id = id
+        self.label = label
+    }
 }
  
 struct TrackerRecord: Hashable {
-    let trackerId: UUID
+    let id: UUID
     let date: Date
+    
+    init(id: UUID = UUID(), date: Date) {
+        self.id = id
+        self.date = date
+    }
 }
  
 struct Tracker: Identifiable {

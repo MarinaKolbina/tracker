@@ -6,7 +6,7 @@ protocol NewBehaviorViewControllerDismissDelegate: AnyObject {
 }
  
 protocol NewBehaviorViewControllerDelegate: AnyObject {
-    func didTapCreateButton(_ tracker: Tracker, section: String)
+    func didTapCreateButton(_ tracker: Tracker, category: TrackerCategory)
 }
  
 class NewBehaviorViewController: UIViewController {
@@ -139,6 +139,7 @@ class NewBehaviorViewController: UIViewController {
     var selectedEmoji: String?
     var selectedColor: UIColor?
     var selectedDays: [Weekday] = []
+    var selectedCategory: TrackerCategory? = TrackerCategoryStore().trackersCategories.randomElement()
     
     var isValidationLabelVisible = false {
         didSet {
@@ -262,7 +263,7 @@ class NewBehaviorViewController: UIViewController {
                                   schedule: selectedDays
             )
             print(tracker)
-            delegate?.didTapCreateButton(tracker, section: "Важное")
+            delegate?.didTapCreateButton(tracker, category: selectedCategory!)
             delegateDismiss?.dismissToTrackerCollectionViewController()
         } else {
             return
