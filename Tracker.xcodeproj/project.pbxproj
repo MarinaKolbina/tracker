@@ -30,6 +30,8 @@
 		B3DBC87629D20F920042CFB0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DBC87529D20F920042CFB0 /* SceneDelegate.swift */; };
 		B3DBC87D29D20F930042CFB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3DBC87C29D20F930042CFB0 /* Assets.xcassets */; };
 		B3DBC88029D20F930042CFB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3DBC87E29D20F930042CFB0 /* LaunchScreen.storyboard */; };
+		B3F284E52A29FE1F00EE2785 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F284E42A29FE1F00EE2785 /* ColorCell.swift */; };
+		B3F284E72A29FE4000EE2785 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F284E62A29FE4000EE2785 /* EmojiCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,8 @@
 		B3DBC87C29D20F930042CFB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B3DBC87F29D20F930042CFB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B3DBC88129D20F930042CFB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3F284E42A29FE1F00EE2785 /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
+		B3F284E62A29FE4000EE2785 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +111,8 @@
 				B368729429D8A65A00FF0E70 /* MakeNewTrackerViewController.swift */,
 				B30847DF29DF0F2C0022BDF4 /* WeekdayTableViewCell.swift */,
 				B37FCDD329DB783A009E3C1D /* DaysOfTheWeekViewController.swift */,
+				B3F284E42A29FE1F00EE2785 /* ColorCell.swift */,
+				B3F284E62A29FE4000EE2785 /* EmojiCell.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -247,6 +253,7 @@
 				B368728F29D85C8100FF0E70 /* TabBarController.swift in Sources */,
 				B30847E029DF0F2C0022BDF4 /* WeekdayTableViewCell.swift in Sources */,
 				B3C7394A29EC756F00ADD453 /* Date+extension.swift in Sources */,
+				B3F284E52A29FE1F00EE2785 /* ColorCell.swift in Sources */,
 				B396442229F5A7090031D51C /* Trackers.xcdatamodeld in Sources */,
 				B368729729D9ACD600FF0E70 /* NewBehaviorViewController.swift in Sources */,
 				B3DBC87429D20F920042CFB0 /* AppDelegate.swift in Sources */,
@@ -256,6 +263,7 @@
 				B37FCDD429DB783A009E3C1D /* DaysOfTheWeekViewController.swift in Sources */,
 				B396442B29F5B2D00031D51C /* TrackerRecordStore.swift in Sources */,
 				B368729129D8600F00FF0E70 /* SplashViewController.swift in Sources */,
+				B3F284E72A29FE4000EE2785 /* EmojiCell.swift in Sources */,
 				B396442929F5B2B00031D51C /* TrackerCategoryStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

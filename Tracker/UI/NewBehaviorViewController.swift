@@ -1,14 +1,14 @@
 import Foundation
 import UIKit
- 
+
 protocol NewBehaviorViewControllerDismissDelegate: AnyObject {
     func dismissToTrackerCollectionViewController()
 }
- 
+
 protocol NewBehaviorViewControllerDelegate: AnyObject {
     func didTapCreateButton(_ tracker: Tracker, category: TrackerCategory)
 }
- 
+
 class NewBehaviorViewController: UIViewController {
     
     lazy var textField: UITextField = {
@@ -79,7 +79,7 @@ class NewBehaviorViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
+        collectionView.register(EmojiCell.self, forCellWithReuseIdentifier: "EmojiCell")
         collectionView.allowsMultipleSelection = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -89,7 +89,7 @@ class NewBehaviorViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ColorCell")
+        collectionView.register(ColorCell.self, forCellWithReuseIdentifier: "ColorCell")
         collectionView.allowsMultipleSelection = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -212,15 +212,15 @@ class NewBehaviorViewController: UIViewController {
             
             textField.heightAnchor.constraint(equalToConstant: 75),
             
-            emojiLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 12),
+            emojiLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 9),
             
-            emojiCollectionView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 13),
-            emojiCollectionView.heightAnchor.constraint(equalToConstant: 150),
+            emojiCollectionView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            emojiCollectionView.heightAnchor.constraint(equalToConstant: 160),
             
-            colorsLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 12),
+            colorsLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 9),
             
-            colorsCollectionView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 13),
-            colorsCollectionView.heightAnchor.constraint(equalToConstant: 150),
+            colorsCollectionView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            colorsCollectionView.heightAnchor.constraint(equalToConstant: 160),
             
             buttonsStackView.heightAnchor.constraint(equalToConstant: 60),
             buttonsStackView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
@@ -284,10 +284,10 @@ class NewBehaviorViewController: UIViewController {
         }
     }
 }
- 
- 
+
+
 // MARK: - UITableViewDataSource, UITableViewDelegate
- 
+
 extension NewBehaviorViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -333,9 +333,9 @@ extension NewBehaviorViewController: UITableViewDataSource, UITableViewDelegate 
         return cell
     }
 }
- 
+
 // MARK: - UICollectionViewDataSource
- 
+
 extension NewBehaviorViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -348,45 +348,26 @@ extension NewBehaviorViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: UICollectionViewCell
         if collectionView == emojiCollectionView {
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath)
-            if let label = cell.contentView.subviews.first as? UILabel {
-                label.text = emojis[indexPath.row]
-            } else {
-                let label = UILabel(frame: cell.contentView.bounds)
-                label.textAlignment = .center
-                label.font = UIFont.systemFont(ofSize: 32)
-                
-                label.text = emojis[indexPath.row]
-                cell.contentView.addSubview(label)
-            }
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath) as! EmojiCell
+            cell.configure(emoji: emojis[indexPath.row])
+            return cell
         } else if collectionView == colorsCollectionView {
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorCell", for: indexPath)
-            cell.contentView.backgroundColor = colors[indexPath.row]
-            cell.layer.cornerRadius = 8
-            cell.layer.masksToBounds = true
-            cell.layer.borderColor = UIColor.black.cgColor
-//            cell.layer.borderColor = UIColor.black.withAlphaComponent(0.3).cgColor
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorCell", for: indexPath) as! ColorCell
+            cell.configure(color: colors[indexPath.row]!)
+            return cell
         } else {
-            cell = UICollectionViewCell()
+            return UICollectionViewCell()
         }
-        return cell
     }
 }
- 
+
 // MARK: - UICollectionViewDelegateFlowLayout
- 
+
 extension NewBehaviorViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == emojiCollectionView {
-            return CGSize(width: collectionView.bounds.width / 6 - 25, height: 38)
-        } else if collectionView == colorsCollectionView {
-            return CGSize(width: collectionView.bounds.width / 6 - 17, height: 40)
-        } else {
-            return CGSize()
-        }
+        return CGSize(width: 52, height: 52)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -394,14 +375,12 @@ extension NewBehaviorViewController: UICollectionViewDelegateFlowLayout {
         if collectionView == emojiCollectionView {
             if let cell = collectionView.cellForItem(at: indexPath) {
                 selectedEmoji = emojis[indexPath.row]
-//                почти невидно
-//                cell.backgroundColor = UIColor(named: "grey_for_textField")
-                cell.backgroundColor = .gray
+                cell.contentView.backgroundColor = UIColor(named: "grey_for_emojies")
             }
         } else if collectionView == colorsCollectionView {
             if let cell = collectionView.cellForItem(at: indexPath) {
                 selectedColor = colors[indexPath.row]
-                cell.layer.borderWidth = 2
+                cell.contentView.layer.borderWidth = 3
             }
         }
         checkFullForm()
@@ -410,34 +389,29 @@ extension NewBehaviorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if collectionView == emojiCollectionView {
             if let cell = collectionView.cellForItem(at: indexPath) {
-                cell.backgroundColor = .white
+                cell.contentView.backgroundColor = .clear
             }
         } else if collectionView == colorsCollectionView {
             if let cell = collectionView.cellForItem(at: indexPath) {
-                cell.layer.borderWidth = 0
+                cell.contentView.layer.borderWidth = 0
             }
         }
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        if collectionView == emojiCollectionView {
-            return 25
-        } else {
-            return 17
-        }
+        let availableSpace = collectionView.frame.width - (19 + 19 + 6 * 52)
+        let cellWidth = availableSpace / 5
+        
+        return cellWidth
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        if collectionView == emojiCollectionView {
-            return 14
-        } else {
-            return 12
-        }
+        0
     }
     
 }
- 
+
 extension NewBehaviorViewController: DaysOfTheWeekDelegate {
     func didChooseDays(days: [Weekday]) {
         // сохраняем выбранные дни в свойство

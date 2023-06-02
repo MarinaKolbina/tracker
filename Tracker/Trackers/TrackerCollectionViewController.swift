@@ -176,6 +176,7 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
             trackersCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
         ])
         
+        try? trackerStore.fetchFilteredTrackers(date: currentDate, searchString: searchBarText)
         reloadTrackersCollectionView()
     }
     
