@@ -30,6 +30,8 @@
 		B3DBC87629D20F920042CFB0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DBC87529D20F920042CFB0 /* SceneDelegate.swift */; };
 		B3DBC87D29D20F930042CFB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3DBC87C29D20F930042CFB0 /* Assets.xcassets */; };
 		B3DBC88029D20F930042CFB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3DBC87E29D20F930042CFB0 /* LaunchScreen.storyboard */; };
+		B3F284E12A29024500EE2785 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F284E02A29024500EE2785 /* OnboardingPageViewController.swift */; };
+		B3F284E32A290E5900EE2785 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F284E22A290E5900EE2785 /* OnboardingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,8 @@
 		B3DBC87C29D20F930042CFB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B3DBC87F29D20F930042CFB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B3DBC88129D20F930042CFB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3F284E02A29024500EE2785 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		B3F284E22A290E5900EE2785 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +111,8 @@
 				B368729429D8A65A00FF0E70 /* MakeNewTrackerViewController.swift */,
 				B30847DF29DF0F2C0022BDF4 /* WeekdayTableViewCell.swift */,
 				B37FCDD329DB783A009E3C1D /* DaysOfTheWeekViewController.swift */,
+				B3F284E02A29024500EE2785 /* OnboardingPageViewController.swift */,
+				B3F284E22A290E5900EE2785 /* OnboardingViewController.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -240,12 +246,14 @@
 				B396442729F5B19A0031D51C /* UIColorMarshalling.swift in Sources */,
 				B3C7394C29ED5AFB00ADD453 /* Constants.swift in Sources */,
 				B396442529F5B0D70031D51C /* TrackerStore.swift in Sources */,
+				B3F284E32A290E5900EE2785 /* OnboardingViewController.swift in Sources */,
 				B3C7394729E0950900ADD453 /* TrackerSupplementaryView.swift in Sources */,
 				B368729E29DA102200FF0E70 /* TextField.swift in Sources */,
 				B3C7394529E094AB00ADD453 /* TrackerCollectionViewController.swift in Sources */,
 				B37FCDD629DCBD54009E3C1D /* TrackerCollectionViewCell.swift in Sources */,
 				B368728F29D85C8100FF0E70 /* TabBarController.swift in Sources */,
 				B30847E029DF0F2C0022BDF4 /* WeekdayTableViewCell.swift in Sources */,
+				B3F284E12A29024500EE2785 /* OnboardingPageViewController.swift in Sources */,
 				B3C7394A29EC756F00ADD453 /* Date+extension.swift in Sources */,
 				B396442229F5A7090031D51C /* Trackers.xcdatamodeld in Sources */,
 				B368729729D9ACD600FF0E70 /* NewBehaviorViewController.swift in Sources */,
