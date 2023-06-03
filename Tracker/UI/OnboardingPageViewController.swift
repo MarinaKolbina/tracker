@@ -10,7 +10,7 @@ import UIKit
 final class OnboardingPageViewController: UIViewController {
     
     private let text: String
-    private let backgroundImage: UIImage
+    private let backgroundImage: UIImage?
     private let label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +27,7 @@ final class OnboardingPageViewController: UIViewController {
         return imageView
     }()
     
-    init(text: String, backgroundImage: UIImage) {
+    init(text: String, backgroundImage: UIImage?) {
         self.text = text
         self.backgroundImage = backgroundImage
         super.init(nibName: nil, bundle: nil)

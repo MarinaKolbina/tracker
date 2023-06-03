@@ -111,8 +111,8 @@
 				B368729429D8A65A00FF0E70 /* MakeNewTrackerViewController.swift */,
 				B30847DF29DF0F2C0022BDF4 /* WeekdayTableViewCell.swift */,
 				B37FCDD329DB783A009E3C1D /* DaysOfTheWeekViewController.swift */,
-				B3F284E02A29024500EE2785 /* OnboardingPageViewController.swift */,
 				B3F284E22A290E5900EE2785 /* OnboardingViewController.swift */,
+				B3F284E02A29024500EE2785 /* OnboardingPageViewController.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
