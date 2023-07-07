@@ -46,7 +46,7 @@ final class TrackerStore: NSObject {
             sectionNameKeyPath: "category",
             cacheName: nil
         )
-                controller.delegate = self
+        controller.delegate = self
         self.fetchedResultsController = controller
         try controller.performFetch()
     }

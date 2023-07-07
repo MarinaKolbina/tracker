@@ -14,12 +14,25 @@ enum TrackerCategoryStoreError: Error {
 }
 
 protocol TrackerCategoryStoreProtocol {
+    var trackersCategories: [TrackerCategory] { get }
+    
     func getTrackerCategory(with id: UUID) throws -> TrackerCategoryCoreData?
+    func getTrackerCategory(at indexPath: IndexPath) -> TrackerCategory?
+    func addNewCategory(_ category: TrackerCategory) throws
+    var delegate: TrackerCategoryStoreDelegate? { get set }
+    func deleteCategory(_ category: TrackerCategory) throws
+    func fetchCategory() throws -> [TrackerCategory] 
+}
+
+protocol TrackerCategoryStoreDelegate: AnyObject {
+    func didUpdate()
 }
 
 final class TrackerCategoryStore: NSObject {
     private let context: NSManagedObjectContext
     private var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData>!
+    weak var delegate: TrackerCategoryStoreDelegate?
+
 
     convenience override init() {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -40,7 +53,7 @@ final class TrackerCategoryStore: NSObject {
             sectionNameKeyPath: nil,
             cacheName: nil
         )
-
+        controller.delegate = self
         self.fetchedResultsController = controller
         try controller.performFetch()
     }
@@ -56,7 +69,7 @@ final class TrackerCategoryStore: NSObject {
         return trackersCategories
     }
     
-    private func fetchCategory() throws -> [TrackerCategory] {
+    func fetchCategory() throws -> [TrackerCategory] {
         let fetchRequest = TrackerCategoryCoreData.fetchRequest()
         let categoriesFromCoreData = try context.fetch(fetchRequest)
         return try categoriesFromCoreData.map { try self.category(from: $0)}
@@ -88,6 +101,12 @@ final class TrackerCategoryStore: NSObject {
                                label: label)
     }
     
+    func deleteCategory(_ category: TrackerCategory) throws {
+        let categoryForDelete = try getTrackerCategory(with: category.id)
+        context.delete(categoryForDelete!)
+        try context.save()
+    }
+    
 }
 
 extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
@@ -98,5 +117,21 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
                                         id.uuidString)
         let categories = try context.fetch(request)
         return categories.first
+    }
+    
+    func getTrackerCategory(at indexPath: IndexPath) -> TrackerCategory? {
+        do {
+            return try category(from: fetchedResultsController.object(at: indexPath))
+        } catch {
+            return nil
+        }
+    }
+}
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        delegate?.didUpdate()
     }
 }

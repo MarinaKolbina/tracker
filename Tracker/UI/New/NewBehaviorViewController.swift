@@ -9,7 +9,7 @@ protocol NewBehaviorViewControllerDelegate: AnyObject {
     func didTapCreateButton(_ tracker: Tracker, category: TrackerCategory)
 }
  
-class NewBehaviorViewController: UIViewController {
+class NewBehaviorViewController: UIViewController, CategoriesViewDelegate {
     
     lazy var textField: UITextField = {
         let field = TextField()
@@ -79,7 +79,7 @@ class NewBehaviorViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
+        collectionView.register(EmojiCell.self, forCellWithReuseIdentifier: "EmojiCell")
         collectionView.allowsMultipleSelection = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -89,7 +89,7 @@ class NewBehaviorViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ColorCell")
+        collectionView.register(ColorCell.self, forCellWithReuseIdentifier: "ColorCell")
         collectionView.allowsMultipleSelection = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -130,6 +130,10 @@ class NewBehaviorViewController: UIViewController {
         return button
     }()
     
+    private let trackerCategoryStore = TrackerCategoryStore()
+    
+    private lazy var categoriesViewController = CategoriesViewController(viewModel: CategoriesViewModel(trackerCategoryStore: trackerCategoryStore))
+    
     var eventType: String?
     
     let emojis = Constants().emojis
@@ -139,7 +143,7 @@ class NewBehaviorViewController: UIViewController {
     var selectedEmoji: String?
     var selectedColor: UIColor?
     var selectedDays: [Weekday] = []
-    var selectedCategory: TrackerCategory? = TrackerCategoryStore().trackersCategories.randomElement()
+    var selectedCategory: TrackerCategory?
     
     var isValidationLabelVisible = false {
         didSet {
@@ -212,15 +216,15 @@ class NewBehaviorViewController: UIViewController {
             
             textField.heightAnchor.constraint(equalToConstant: 75),
             
-            emojiLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 12),
-            
-            emojiCollectionView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 13),
-            emojiCollectionView.heightAnchor.constraint(equalToConstant: 150),
+            emojiLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 9),
+
+            emojiCollectionView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            emojiCollectionView.heightAnchor.constraint(equalToConstant: 160),
             
             colorsLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 12),
             
-            colorsCollectionView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 13),
-            colorsCollectionView.heightAnchor.constraint(equalToConstant: 150),
+            colorsCollectionView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            colorsCollectionView.heightAnchor.constraint(equalToConstant: 160),
             
             buttonsStackView.heightAnchor.constraint(equalToConstant: 60),
             buttonsStackView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
@@ -233,6 +237,16 @@ class NewBehaviorViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        categoriesViewController.provideSelectedCategory = { [weak self] category in
+            self?.selectedCategory = category
+            self?.tableView.reloadData()
+        }
+        
+        tableView.reloadData()
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 1 {
             let daysOfTheWeekViewController = DaysOfTheWeekViewController()
@@ -240,6 +254,14 @@ class NewBehaviorViewController: UIViewController {
             daysOfTheWeekViewController.selectedDays = selectedDays
             let navigationController = UINavigationController(rootViewController: daysOfTheWeekViewController)
             daysOfTheWeekViewController.modalPresentationStyle = .overFullScreen
+            present(navigationController, animated: true, completion: nil)
+        }
+        
+        if indexPath.row == 0 {
+            categoriesViewController.delegate = self
+//            categoriesViewController.selectedCategories = selectedCategories
+            let navigationController = UINavigationController(rootViewController: categoriesViewController)
+            categoriesViewController.modalPresentationStyle = .overFullScreen
             present(navigationController, animated: true, completion: nil)
         }
     }
@@ -320,7 +342,7 @@ extension NewBehaviorViewController: UITableViewDataSource, UITableViewDelegate 
             cell.textLabel?.text = "Категория"
             // Будет доделано в следующих спринтах
             cell.accessoryType = .disclosureIndicator
-            cell.detailTextLabel?.text = "Важное"
+            cell.detailTextLabel?.text = selectedCategory?.label
         } else {
             cell.textLabel?.text = "Расписание"
             cell.accessoryType = .disclosureIndicator // добавляем пользовательский индикатор доступности
@@ -348,30 +370,19 @@ extension NewBehaviorViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: UICollectionViewCell
+//        let cell: UICollectionViewCell
         if collectionView == emojiCollectionView {
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath)
-            if let label = cell.contentView.subviews.first as? UILabel {
-                label.text = emojis[indexPath.row]
-            } else {
-                let label = UILabel(frame: cell.contentView.bounds)
-                label.textAlignment = .center
-                label.font = UIFont.systemFont(ofSize: 32)
-                
-                label.text = emojis[indexPath.row]
-                cell.contentView.addSubview(label)
-            }
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath) as! EmojiCell
+            cell.configure(emoji: emojis[indexPath.row])
+            return cell
         } else if collectionView == colorsCollectionView {
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorCell", for: indexPath)
-            cell.contentView.backgroundColor = colors[indexPath.row]
-            cell.layer.cornerRadius = 8
-            cell.layer.masksToBounds = true
-            cell.layer.borderColor = UIColor.black.cgColor
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorCell", for: indexPath) as! ColorCell
+            cell.configure(color: colors[indexPath.row]!)
+            return cell
 //            cell.layer.borderColor = UIColor.black.withAlphaComponent(0.3).cgColor
         } else {
-            cell = UICollectionViewCell()
+            return UICollectionViewCell()
         }
-        return cell
     }
 }
  
@@ -380,28 +391,22 @@ extension NewBehaviorViewController: UICollectionViewDataSource {
 extension NewBehaviorViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == emojiCollectionView {
-            return CGSize(width: collectionView.bounds.width / 6 - 25, height: 38)
-        } else if collectionView == colorsCollectionView {
-            return CGSize(width: collectionView.bounds.width / 6 - 17, height: 40)
-        } else {
-            return CGSize()
-        }
+        return CGSize(width: 52, height: 52)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        isCreateButtonEnabled = true
+        print("select")
         if collectionView == emojiCollectionView {
+            print("emoji select")
             if let cell = collectionView.cellForItem(at: indexPath) {
                 selectedEmoji = emojis[indexPath.row]
-//                почти невидно
-//                cell.backgroundColor = UIColor(named: "grey_for_textField")
-                cell.backgroundColor = .gray
+                cell.contentView.backgroundColor = UIColor(named: "grey_for_emojies")
             }
         } else if collectionView == colorsCollectionView {
+            print("color select")
             if let cell = collectionView.cellForItem(at: indexPath) {
                 selectedColor = colors[indexPath.row]
-                cell.layer.borderWidth = 2
+                cell.contentView.layer.borderWidth = 3
             }
         }
         checkFullForm()
@@ -410,32 +415,26 @@ extension NewBehaviorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if collectionView == emojiCollectionView {
             if let cell = collectionView.cellForItem(at: indexPath) {
-                cell.backgroundColor = .white
+                cell.contentView.backgroundColor = .clear
             }
         } else if collectionView == colorsCollectionView {
             if let cell = collectionView.cellForItem(at: indexPath) {
-                cell.layer.borderWidth = 0
+                cell.contentView.layer.borderWidth = 0
             }
         }
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        if collectionView == emojiCollectionView {
-            return 25
-        } else {
-            return 17
-        }
+        let availableSpace = collectionView.frame.width - (19 + 19 + 6 * 52)
+        let cellWidth = availableSpace / 5
+        
+        return cellWidth
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        if collectionView == emojiCollectionView {
-            return 14
-        } else {
-            return 12
-        }
+        0
     }
-    
 }
  
 extension NewBehaviorViewController: DaysOfTheWeekDelegate {

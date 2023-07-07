@@ -101,23 +101,23 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
         let tracker1 = Tracker(id: UUID(uuidString: "32955682-0166-4AE7-A872-0FBC21EB9832")!, label: "test", emoji: "🙂", color: UIColor.systemPink, schedule: [Weekday.thurshday, Weekday.tuesday])
         let tracker2 = Tracker(id: UUID(uuidString: "B210C14B-E918-4BA4-A828-74BB6E10897B")!, label: "test2", emoji: "🐶", color: UIColor.systemGreen, schedule: [Weekday.thurshday, Weekday.sunday])
         
-        if trackerCategoryStore.trackersCategories.count == 0 {
-            do {
-                try trackerCategoryStore.addNewCategory(category1)
-                try trackerCategoryStore.addNewCategory(category2)
-            } catch {
-                print("Creating tracker \(error)")
-            }
-        }
+//        if trackerCategoryStore.trackersCategories.count == 0 {
+//            do {
+//                try trackerCategoryStore.addNewCategory(category1)
+//                try trackerCategoryStore.addNewCategory(category2)
+//            } catch {
+//                print("Creating tracker \(error)")
+//            }
+//        }
         
-        if trackerStore.trackers.count == 0 {
-            do {
-                try trackerStore.addNewTracker(tracker1, with: category1)
-                try trackerStore.addNewTracker(tracker2, with: category1)
-            } catch {
-                print("Creating tracker \(error)")
-            }
-        }
+//        if trackerStore.trackers.count == 0 {
+//            do {
+//                try trackerStore.addNewTracker(tracker1, with: category1)
+//                try trackerStore.addNewTracker(tracker2, with: category1)
+//            } catch {
+//                print("Creating tracker \(error)")
+//            }
+//        }
         
         print(trackerStore.trackers)
         
@@ -176,6 +176,7 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
             trackersCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
         ])
         
+        try? trackerStore.fetchFilteredTrackers(date: currentDate, searchString: searchBarText)
         reloadTrackersCollectionView()
     }
     
