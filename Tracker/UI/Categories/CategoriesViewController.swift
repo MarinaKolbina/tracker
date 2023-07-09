@@ -97,6 +97,11 @@ class CategoriesViewController: UIViewController {
         hideExtras()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        hideExtras()
+    }
+    
     @objc func didTapAddNewCategoryButton() {
         
         let makeNewCategoryViewController = MakeNewCategoryViewController(title: "Новая категория")
