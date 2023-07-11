@@ -14,7 +14,7 @@ final class OnboardingViewController: UIPageViewController {
         button.backgroundColor = .black
         button.setTitleColor(.white, for: .normal)
         button.setTitle("Вот это технологии!", for: .normal)
-        button.addTarget(self, action: #selector(didTapControllers), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -56,6 +56,14 @@ final class OnboardingViewController: UIPageViewController {
     private func didTapControllers() {
         controllers?()
     }
+    
+    @objc
+    private func didTapButton() {
+        let tabBarVC = TabBarController()
+        tabBarVC.modalPresentationStyle = .fullScreen
+        tabBarVC.modalTransitionStyle = .flipHorizontal
+        present(tabBarVC, animated: true)
+    }
 }
 
 private extension OnboardingViewController {
@@ -88,7 +96,7 @@ private extension OnboardingViewController {
         ])
     }
 }
-
+    
 // MARK: - UIPageViewControllerDataSource
 
 extension OnboardingViewController: UIPageViewControllerDataSource {

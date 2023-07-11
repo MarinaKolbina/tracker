@@ -11,7 +11,7 @@ final class CategoriesViewModel {
     
     private var trackerCategoryStore: TrackerCategoryStoreProtocol
     
-//    private(set) var selectedCategory: TrackerCategory? = nil
+    private(set) var selectedCategory: TrackerCategory? = nil
     
     init(trackerCategoryStore: TrackerCategoryStoreProtocol) {
         self.trackerCategoryStore = trackerCategoryStore
@@ -40,9 +40,9 @@ final class CategoriesViewModel {
     }
     
     
-//    func selectCategory(indexPath: IndexPath) {
-//        selectedCategory = trackerCategoryStore.trackersCategories[indexPath.row]
-//    }
+    func selectCategory(indexPath: IndexPath) {
+        selectedCategory = trackerCategoryStore.trackersCategories[indexPath.row]
+    }
     
 }
 

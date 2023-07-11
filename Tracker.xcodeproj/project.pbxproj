@@ -38,6 +38,7 @@
 		B3F284F52A571A5200EE2785 /* CategoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F284F42A571A5200EE2785 /* CategoriesViewModel.swift */; };
 		B3F284F72A588C0500EE2785 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F284F62A588C0500EE2785 /* ColorCell.swift */; };
 		B3F284FB2A588F3A00EE2785 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F284FA2A588F3A00EE2785 /* EmojiCell.swift */; };
+		B3F284FD2A5DCFC400EE2785 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F284FC2A5DCFC400EE2785 /* RootViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +75,7 @@
 		B3F284F42A571A5200EE2785 /* CategoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewModel.swift; sourceTree = "<group>"; };
 		B3F284F62A588C0500EE2785 /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		B3F284FA2A588F3A00EE2785 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
+		B3F284FC2A5DCFC400EE2785 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 				B368729C29DA100800FF0E70 /* Components */,
 				B396442E29F857860031D51C /* UI */,
 				B3DBC87529D20F920042CFB0 /* SceneDelegate.swift */,
+				B3F284FC2A5DCFC400EE2785 /* RootViewController.swift */,
 				B3DBC87329D20F920042CFB0 /* AppDelegate.swift */,
 				B3DBC87E29D20F930042CFB0 /* LaunchScreen.storyboard */,
 				B3DBC88129D20F930042CFB0 /* Info.plist */,
@@ -320,6 +323,7 @@
 				B368729729D9ACD600FF0E70 /* NewBehaviorViewController.swift in Sources */,
 				B3DBC87429D20F920042CFB0 /* AppDelegate.swift in Sources */,
 				B37FCDD029DB565C009E3C1D /* SupplementaryView.swift in Sources */,
+				B3F284FD2A5DCFC400EE2785 /* RootViewController.swift in Sources */,
 				B368729B29DA00C600FF0E70 /* Models.swift in Sources */,
 				B3DBC87629D20F920042CFB0 /* SceneDelegate.swift in Sources */,
 				B37FCDD429DB783A009E3C1D /* DaysOfTheWeekViewController.swift in Sources */,

@@ -16,6 +16,7 @@ class CategoriesViewController: UIViewController {
     weak var delegate: CategoriesViewDelegate?
     private var viewModel: CategoriesViewModel
     var provideSelectedCategory: ((TrackerCategory) -> Void)?
+    var tableViewHeightConstraint: NSLayoutConstraint?
     
     init(viewModel: CategoriesViewModel) {
         self.viewModel = viewModel
@@ -75,12 +76,14 @@ class CategoriesViewController: UIViewController {
         view.addSubview(littleTitle)
         
         let tableHeight = 75 * viewModel.countCategories()
+        self.tableViewHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: CGFloat(tableHeight))
+        self.tableViewHeightConstraint?.isActive = true
                     
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.heightAnchor.constraint(equalToConstant: CGFloat(tableHeight)),
+//            tableView.heightAnchor.constraint(equalToConstant: CGFloat(tableHeight)),
             
             addNewCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             addNewCategoryButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -116,6 +119,13 @@ class CategoriesViewController: UIViewController {
         imageView.isHidden = viewModel.countCategories() > 0
         littleTitle.isHidden = viewModel.countCategories() > 0
         tableView.isHidden = viewModel.countCategories() == 0
+        
+        
+        let maxTableHeight = min(addNewCategoryButton.frame.minY - tableView.frame.minY - 60, CGFloat(75 * viewModel.countCategories()))
+        
+        tableViewHeightConstraint?.constant = maxTableHeight
+        tableViewHeightConstraint?.priority = .defaultHigh
+        
         tableView.reloadData()
     }
     
@@ -166,13 +176,8 @@ extension CategoriesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             cell.accessoryType = .checkmark
-//            viewModel.selectCategory(indexPath: indexPath)
-//            provideSelectedCategory?(viewModel.selectedCategory!)
-            guard
-                let category = viewModel.getCategory(at: indexPath)
-            else { return }
-            provideSelectedCategory?(category)
-//            provideSelectedCategory?(viewModel.getCategory(at: indexPath))
+            viewModel.selectCategory(indexPath: indexPath)
+            provideSelectedCategory?(viewModel.selectedCategory!)
             dismiss(animated: true)
         }
     }
