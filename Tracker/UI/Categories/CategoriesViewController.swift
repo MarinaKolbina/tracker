@@ -7,13 +7,8 @@
 
 import UIKit
 
-protocol CategoriesViewDelegate: AnyObject {
-}
-
 class CategoriesViewController: UIViewController {
     
-    
-    weak var delegate: CategoriesViewDelegate?
     private var viewModel: CategoriesViewModel
     var provideSelectedCategory: ((TrackerCategory) -> Void)?
     var tableViewHeightConstraint: NSLayoutConstraint?

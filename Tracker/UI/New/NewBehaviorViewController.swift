@@ -1,15 +1,11 @@
 import Foundation
 import UIKit
  
-protocol NewBehaviorViewControllerDismissDelegate: AnyObject {
-    func dismissToTrackerCollectionViewController()
-}
- 
 protocol NewBehaviorViewControllerDelegate: AnyObject {
     func didTapCreateButton(_ tracker: Tracker, category: TrackerCategory)
 }
  
-class NewBehaviorViewController: UIViewController, CategoriesViewDelegate {
+class NewBehaviorViewController: UIViewController {
     
     lazy var textField: UITextField = {
         let field = TextField()
@@ -143,7 +139,11 @@ class NewBehaviorViewController: UIViewController, CategoriesViewDelegate {
     var selectedEmoji: String?
     var selectedColor: UIColor?
     var selectedDays: [Weekday] = []
-    var selectedCategory: TrackerCategory?
+    private var selectedCategory: TrackerCategory? = nil {
+        didSet {
+            checkFullForm()
+        }
+    }
     
     var isValidationLabelVisible = false {
         didSet {
@@ -168,7 +168,6 @@ class NewBehaviorViewController: UIViewController, CategoriesViewDelegate {
     }
     
     weak var delegate: NewBehaviorViewControllerDelegate?
-    weak var delegateDismiss: NewBehaviorViewControllerDismissDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -258,7 +257,7 @@ class NewBehaviorViewController: UIViewController, CategoriesViewDelegate {
         }
         
         if indexPath.row == 0 {
-            categoriesViewController.delegate = self
+//            categoriesViewController.delegate = self
 //            categoriesViewController.selectedCategories = selectedCategories
             let navigationController = UINavigationController(rootViewController: categoriesViewController)
             categoriesViewController.modalPresentationStyle = .overFullScreen
@@ -274,7 +273,8 @@ class NewBehaviorViewController: UIViewController, CategoriesViewDelegate {
     }
     
     @objc func cancelButtonTapped() {
-        delegateDismiss?.dismissToTrackerCollectionViewController()
+        self.presentingViewController?.dismiss(animated: false, completion: nil)
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func createButtonTapped() {
@@ -286,7 +286,10 @@ class NewBehaviorViewController: UIViewController, CategoriesViewDelegate {
             )
             print(tracker)
             delegate?.didTapCreateButton(tracker, category: selectedCategory!)
-            delegateDismiss?.dismissToTrackerCollectionViewController()
+            
+            self.presentingViewController?.dismiss(animated: false, completion: nil)
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
+            
         } else {
             return
         }
@@ -299,6 +302,7 @@ class NewBehaviorViewController: UIViewController, CategoriesViewDelegate {
     func checkFullForm() {
         if let _ = selectedEmoji,
            let _ = selectedColor,
+           let _ = selectedCategory,
            let selectedLabel = selectedLabel {
             isCreateButtonEnabled = selectedLabel != "" && !isValidationLabelVisible && selectedDays != []
         } else {

@@ -66,7 +66,6 @@ class MakeNewTrackerViewController: UIViewController {
     func presentBehaviorController(eventType: String) {
         let newBehaviorViewController = NewBehaviorViewController()
         newBehaviorViewController.eventType = eventType
-        newBehaviorViewController.delegateDismiss = presentingViewController as? TabBarController
         if let trackerCollectionViewController = (presentingViewController as? TabBarController)?.viewControllers?[0] as? TrackerCollectionViewController
         {
             newBehaviorViewController.delegate = trackerCollectionViewController
