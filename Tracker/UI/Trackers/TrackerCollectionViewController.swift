@@ -19,9 +19,11 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
         return button
     }()
     
-    var mainTitle: UILabel = {
+    let trackersText = NSLocalizedString("trackers", comment: "Text displayed on title")
+    
+    lazy var mainTitle: UILabel = {
         let title = UILabel()
-        title.text = "Трекеры"
+        title.text = trackersText
         title.font = UIFont(name:"HelveticaNeue-Bold", size: 34.0)
         title.textColor = .black
         title.translatesAutoresizingMaskIntoConstraints = false

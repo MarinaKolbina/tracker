@@ -82,26 +82,17 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    let daysText = NSLocalizedString("days", comment: "Text to count days")
+    let dayText = NSLocalizedString("day", comment: "Text to count day")
+
     static let identifier = "trackerCell"
     private var days = 0 {
         didSet {
-            let preLastDigit = days % 100 / 10
-            var dayWord = ""
-            if (preLastDigit == 1) {
-                dayWord = "дней";
-            } else {
-                let lastDigit = days % 10
-                if lastDigit == 1 {
-                    dayWord = "день"
-                } else if 2 <= lastDigit && lastDigit <= 4 {
-                    dayWord = "дня"
-                } else {
-                    dayWord = "дней"
-                }
-            }
-            daysCounter.text = "\(days) \(dayWord)"
+            let daysString = String.localizedStringWithFormat(NSLocalizedString("numberOfDays", comment: "Number of days"), days)
+            daysCounter.text = "\(daysString)"
         }
     }
+    
     private var tracker: Tracker?
     weak var delegate: TrackerCellDelegate?
     

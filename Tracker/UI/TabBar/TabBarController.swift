@@ -10,17 +10,20 @@ import UIKit
  
 final class TabBarController: UITabBarController {
     
+    let trackersMenu = NSLocalizedString("trackers.menu", comment: "Text displayed on left side of menu")
+    let statisticsText = NSLocalizedString("statistics.menu", comment: "Text displayed on right side of menu")
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Create two view controllers to display in the tab bar
         let firstVC = TrackerCollectionViewController()
         firstVC.view.backgroundColor = .white
-        firstVC.tabBarItem = UITabBarItem(title: "Трекеры", image: UIImage(named: "trackersIcon"), tag: 0)
+        firstVC.tabBarItem = UITabBarItem(title: trackersMenu, image: UIImage(named: "trackersIcon"), tag: 0)
         
         let secondVC = UIViewController()
         secondVC.view.backgroundColor = .white
-        secondVC.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "statisticsIcon"), tag: 1)
+        secondVC.tabBarItem = UITabBarItem(title: statisticsText, image: UIImage(named: "statisticsIcon"), tag: 1)
         
         // Set the view controllers to display in the tab bar
         viewControllers = [firstVC, secondVC]
