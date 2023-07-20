@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 
 class TrackerCollectionViewController: UIViewController, UICollectionViewDelegate {
+    
+    private let analyticsService = AnalyticsService()
+    
     var plusButton: UIButton = {
         let button = UIButton.systemButton(
             with: UIImage(named: "plusIcon")!,
@@ -160,6 +163,7 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     //Methods
     
     @objc func didTapPlusButton() {
+        analyticsService.reportEvent(event: .click, screen: .main, item: .addTrack)
         let makeNewTrackerViewController = MakeNewTrackerViewController()
         let navigationController = UINavigationController(rootViewController: makeNewTrackerViewController)
         present(navigationController, animated: true, completion: nil)
@@ -182,6 +186,16 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
         
         trackersCollectionView.reloadData()
     }
+    
+    @objc
+    private func didTapFilterButton() {
+        analyticsService.reportEvent(event: .click, screen: .main, item: .filter)
+        //        TO DO
+    }
+    
+//    analyticsService.reportEvent(event: .click, screen: .main, item: .edit)
+//    analyticsService.reportEvent(event: .click, screen: .main, item: .delete)
+    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -248,6 +262,16 @@ extension TrackerCollectionViewController: UICollectionViewDataSource {
         }
         view.titleLabel.font = UIFont(name:"HelveticaNeue-Bold", size: 19.0)
         return view
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        analyticsService.reportScreen(event: .open, onScreen: .main)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.reportScreen(event: .close, onScreen: .main)
     }
 }
 

@@ -20,6 +20,14 @@ protocol TrackerStoreDelegate: AnyObject {
     func didUpdate()
 }
 
+protocol TrackerStoreProtocol {
+    var trackers: [Tracker] { get }
+    func addNewTracker(_ tracker: Tracker, with category: TrackerCategory) throws
+    func fetchFilteredTrackers(date: Date, searchString: String) throws
+    func getTracker(at indexPath: IndexPath) -> Tracker?
+    func getTracker(with id: UUID) throws -> TrackerCoreData?
+}
+
 final class TrackerStore: NSObject {
     private let context: NSManagedObjectContext
     private let uiColorMarshalling = UIColorMarshalling()
@@ -50,6 +58,61 @@ final class TrackerStore: NSObject {
         self.fetchedResultsController = controller
         try controller.performFetch()
     }
+    
+    private func tracker(from trackerCoreData: TrackerCoreData) throws -> Tracker {
+        guard let colorHex = trackerCoreData.colorHex else {
+            throw TrackerStoreError.decodingErrorInvalidColorHex
+        }
+        guard let emoji = trackerCoreData.emoji else {
+            throw TrackerStoreError.decodingErrorInvalidEmojies
+        }
+        guard let trackerId = trackerCoreData.trackerId,
+              let uuidTrackerId = UUID(uuidString: trackerId)
+        else {
+            throw TrackerStoreError.decodingErrorInvalidId
+        }
+        guard let label = trackerCoreData.label else {
+            throw TrackerStoreError.decodingErrorInvalidLabel
+        }
+        guard let schedule = trackerCoreData.schedule else {
+            throw TrackerStoreError.decodingErrorInvalidSchedule
+        }
+        
+        let intArray = schedule.components(separatedBy: ",").map { Int($0) }
+        
+        var scheduleWeekdays: [Weekday] = []
+        
+        for i in intArray {
+            for k in Weekday.allCases {
+                if k.day.index == i {
+                    scheduleWeekdays.append(k)
+                }
+            }
+        }
+        
+        
+        return Tracker(id: uuidTrackerId,
+                       label: label,
+                       emoji: emoji,
+                       color: uiColorMarshalling.color(from: colorHex),
+                       schedule: scheduleWeekdays
+                )
+    }
+    
+}
+
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension TrackerStore: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        delegate?.didUpdate()
+    }
+}
+
+// MARK: - TrackerStoreProtocol
+
+extension TrackerStore: TrackerStoreProtocol {
     
     var trackers: [Tracker] {
         guard
@@ -141,54 +204,6 @@ final class TrackerStore: NSObject {
         let trackers = try context.fetch(request)
         return trackers.first
     }
-    
-    private func tracker(from trackerCoreData: TrackerCoreData) throws -> Tracker {
-        guard let colorHex = trackerCoreData.colorHex else {
-            throw TrackerStoreError.decodingErrorInvalidColorHex
-        }
-        guard let emoji = trackerCoreData.emoji else {
-            throw TrackerStoreError.decodingErrorInvalidEmojies
-        }
-        guard let trackerId = trackerCoreData.trackerId,
-              let uuidTrackerId = UUID(uuidString: trackerId)
-        else {
-            throw TrackerStoreError.decodingErrorInvalidId
-        }
-        guard let label = trackerCoreData.label else {
-            throw TrackerStoreError.decodingErrorInvalidLabel
-        }
-        guard let schedule = trackerCoreData.schedule else {
-            throw TrackerStoreError.decodingErrorInvalidSchedule
-        }
-        
-        let intArray = schedule.components(separatedBy: ",").map { Int($0) }
-        
-        var scheduleWeekdays: [Weekday] = []
-        
-        for i in intArray {
-            for k in Weekday.allCases {
-                if k.day.index == i {
-                    scheduleWeekdays.append(k)
-                }
-            }
-        }
-        
-        
-        return Tracker(id: uuidTrackerId,
-                       label: label,
-                       emoji: emoji,
-                       color: uiColorMarshalling.color(from: colorHex),
-                       schedule: scheduleWeekdays
-                )
-    }
-    
 }
 
 
-// MARK: - NSFetchedResultsControllerDelegate
-
-extension TrackerStore: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        delegate?.didUpdate()
-    }
-}
