@@ -164,6 +164,7 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     
     @objc func didTapPlusButton() {
         analyticsService.reportEvent(event: .click, screen: .main, item: .addTrack)
+        print(1)
         let makeNewTrackerViewController = MakeNewTrackerViewController()
         let navigationController = UINavigationController(rootViewController: makeNewTrackerViewController)
         present(navigationController, animated: true, completion: nil)
@@ -267,11 +268,13 @@ extension TrackerCollectionViewController: UICollectionViewDataSource {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         analyticsService.reportScreen(event: .open, onScreen: .main)
+        print(2)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         analyticsService.reportScreen(event: .close, onScreen: .main)
+        print(3)
     }
 }
 
