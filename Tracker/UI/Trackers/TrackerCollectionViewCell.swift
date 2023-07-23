@@ -16,7 +16,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     
     let trackerBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "green_for_tracker")
         view.layer.cornerRadius = 16
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -43,9 +42,12 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.textColor = .white
+        label.textAlignment = .left
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
     let mainStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -98,9 +100,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        contentView.backgroundColor = .white
-        
+                
         emojiLabel.frame = trackerBackgroundView.bounds
         
         trackerBackgroundView.addSubview(tinyView)
@@ -126,6 +126,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             
             titleLabel.leadingAnchor.constraint(equalTo: trackerBackgroundView.leadingAnchor, constant: 12),
             titleLabel.bottomAnchor.constraint(equalTo: trackerBackgroundView.bottomAnchor, constant: -12),
+            titleLabel.trailingAnchor.constraint(equalTo: trackerBackgroundView.trailingAnchor, constant: -12),
             
             daysCounter.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 12),
             
@@ -175,5 +176,3 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         delegate?.didTapRoundButton(of: self, with: tracker)
     }
 }
- 
-

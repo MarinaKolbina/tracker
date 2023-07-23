@@ -16,9 +16,10 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tabBar.backgroundColor = UIColor(named: "background_screen")
+        
         // Create two view controllers to display in the tab bar
-        let firstVC = TrackerCollectionViewController()
-        firstVC.view.backgroundColor = .white
+        let firstVC = TrackerCollectionViewController(trackerStore: TrackerStore())
         firstVC.tabBarItem = UITabBarItem(title: trackersMenu, image: UIImage(named: "trackersIcon"), tag: 0)
         
         let secondVC = UIViewController()

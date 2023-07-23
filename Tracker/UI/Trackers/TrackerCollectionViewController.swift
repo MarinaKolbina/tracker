@@ -35,7 +35,6 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     
     lazy var datePicker: UIDatePicker = {
         let date = UIDatePicker()
-        date.backgroundColor = .white
         date.tintColor = .blue
         date.datePickerMode = .date
         date.preferredDatePickerStyle = .compact
@@ -77,6 +76,7 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     
     lazy var trackersCollectionView: UICollectionView = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collection.backgroundColor = .clear
         collection.allowsMultipleSelection = false
         collection.delegate = self
         collection.dataSource = self
@@ -94,9 +94,9 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     }
     private var completedTrackers: Set<TrackerRecord> = []
     private var currentDate: Date = Date()
-    private let trackerStore = TrackerStore()
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
+    private var trackerStore: TrackerStoreProtocol
     
     
     override func viewDidLoad() {
@@ -122,6 +122,8 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
         view.addSubview(littleTitle)
         view.addSubview(navigationBar)
         view.addSubview(trackersCollectionView)
+        
+        view.backgroundColor = UIColor(named: "background_screen")
         
         NSLayoutConstraint.activate([
             plusButton.widthAnchor.constraint(equalToConstant: 19),
@@ -160,6 +162,16 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
         reloadTrackersCollectionView()
     }
     
+    // MARK: - LifeCycle
+    init(trackerStore: TrackerStoreProtocol) {
+        self.trackerStore = trackerStore
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //Methods
     
     @objc func didTapPlusButton() {
@@ -181,9 +193,9 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     }
     
     func reloadTrackersCollectionView() {
-        imageView.isHidden = trackerStore.trackers.count > 0
-        littleTitle.isHidden = trackerStore.trackers.count > 0
-        trackersCollectionView.isHidden = trackerStore.trackers.count == 0
+        imageView.isHidden = trackerStore.getTrackersAmount() > 0
+        littleTitle.isHidden = trackerStore.getTrackersAmount() > 0
+        trackersCollectionView.isHidden = trackerStore.getTrackersAmount() == 0
         
         trackersCollectionView.reloadData()
     }
@@ -204,19 +216,11 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
 extension TrackerCollectionViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        guard let sectionsAmount = trackerStore.fetchedResultsController.sections?.count
-        else {
-            return 0
-        }
-        return sectionsAmount
+        trackerStore.getCategoriesAmount()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let trackersAmount = trackerStore.fetchedResultsController.sections?[section].numberOfObjects
-        else {
-            return 0
-        }
-        return trackersAmount
+        trackerStore.getTrackersAmountPerSection(section: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -256,11 +260,7 @@ extension TrackerCollectionViewController: UICollectionViewDataSource {
             return UICollectionReusableView()
         }
         
-        if let trackerCoreData = trackerStore.fetchedResultsController.sections?[indexPath.section].objects?.first as? TrackerCoreData {
-            view.titleLabel.text = trackerCoreData.category?.label ?? ""
-        } else {
-            view.titleLabel.text = ""
-        }
+        view.titleLabel.text = trackerStore.getCategoryLabel(section: indexPath.section)
         view.titleLabel.font = UIFont(name:"HelveticaNeue-Bold", size: 19.0)
         return view
     }

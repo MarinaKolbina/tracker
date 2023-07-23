@@ -21,17 +21,22 @@ protocol TrackerStoreDelegate: AnyObject {
 }
 
 protocol TrackerStoreProtocol {
-    var trackers: [Tracker] { get }
+    var delegate: TrackerStoreDelegate? { get set}
+    
     func addNewTracker(_ tracker: Tracker, with category: TrackerCategory) throws
     func fetchFilteredTrackers(date: Date, searchString: String) throws
     func getTracker(at indexPath: IndexPath) -> Tracker?
     func getTracker(with id: UUID) throws -> TrackerCoreData?
+    func getTrackersAmount() -> Int
+    func getCategoriesAmount() -> Int
+    func getTrackersAmountPerSection(section: Int) -> Int
+    func getCategoryLabel(section: Int) -> String
 }
 
 final class TrackerStore: NSObject {
     private let context: NSManagedObjectContext
     private let uiColorMarshalling = UIColorMarshalling()
-    var fetchedResultsController: NSFetchedResultsController<TrackerCoreData>!
+    private var fetchedResultsController: NSFetchedResultsController<TrackerCoreData>!
     private var trackerCategoryStore = TrackerCategoryStore()
     weak var delegate: TrackerStoreDelegate?
     
@@ -57,6 +62,17 @@ final class TrackerStore: NSObject {
         controller.delegate = self
         self.fetchedResultsController = controller
         try controller.performFetch()
+    }
+    
+    var trackers: [Tracker] {
+        guard
+            let objects = self.fetchedResultsController.fetchedObjects,
+            let trackers = try? objects.map({ try self.tracker(from: $0) })
+        else {
+            print("Cannot pull trackers")
+            return []
+        }
+        return trackers
     }
     
     private func tracker(from trackerCoreData: TrackerCoreData) throws -> Tracker {
@@ -96,7 +112,7 @@ final class TrackerStore: NSObject {
                        emoji: emoji,
                        color: uiColorMarshalling.color(from: colorHex),
                        schedule: scheduleWeekdays
-                )
+        )
     }
     
 }
@@ -113,18 +129,6 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
 // MARK: - TrackerStoreProtocol
 
 extension TrackerStore: TrackerStoreProtocol {
-    
-    var trackers: [Tracker] {
-        guard
-            let objects = self.fetchedResultsController.fetchedObjects,
-            let trackers = try? objects.map({ try self.tracker(from: $0) })
-        else {
-            print("Cannot pull trackers")
-            return []
-        }
-        print(trackers)
-        return trackers
-    }
     
     func addNewTracker(_ tracker: Tracker, with category: TrackerCategory) throws {
         do {
@@ -167,7 +171,7 @@ extension TrackerStore: TrackerStoreProtocol {
                                            #keyPath(TrackerCoreData.schedule),
                                            weekday)
         predicates.append(weekdayPredicate)
-  
+        
         // searchBar predicate
         if !searchString.isEmpty {
             let searchBarPredicate = NSPredicate(format: "%K CONTAINS[c] %@",
@@ -175,7 +179,7 @@ extension TrackerStore: TrackerStoreProtocol {
                                                  searchString)
             predicates.append(searchBarPredicate)
         }
-
+        
         // predicates applying
         fetchedResultsController.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         
@@ -204,6 +208,32 @@ extension TrackerStore: TrackerStoreProtocol {
         let trackers = try context.fetch(request)
         return trackers.first
     }
+    
+    func getTrackersAmount() -> Int {
+        return trackers.count
+    }
+    
+    func getCategoriesAmount() -> Int {
+        if let amount = fetchedResultsController.sections?.count {
+            return amount
+        } else {
+            return 0
+        }
+    }
+    
+    func getTrackersAmountPerSection(section: Int) -> Int {
+        if let amount = fetchedResultsController.sections?[section].numberOfObjects {
+            return amount
+        } else {
+            return 0
+        }
+    }
+    
+    func getCategoryLabel(section: Int) -> String {
+        if let trackerCoreData = fetchedResultsController.sections?[section].objects?.first as? TrackerCoreData {
+            return trackerCoreData.category?.label ?? ""
+        } else {
+            return ""
+        }
+    }
 }
-
-

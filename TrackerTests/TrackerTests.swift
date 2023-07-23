@@ -8,66 +8,78 @@
 import XCTest
 import SnapshotTesting
 @testable import Tracker
-
+ 
 final class TrackerTests: XCTestCase {
-
+ 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-
+ 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+ 
+    
+    func testViewControllerLight() {
+        let vc = TrackerCollectionViewController(trackerStore: StubTrackerStore())
+        vc.view.backgroundColor = .white
+        assertSnapshot(matching: vc, as: .image(traits: .init(userInterfaceStyle: .light)))
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+    
+    func testViewControllerDark() {
+        let vc = TrackerCollectionViewController(trackerStore: StubTrackerStore())
+        vc.view.backgroundColor = .black
+        assertSnapshot(matching: vc, as: .image(traits: .init(userInterfaceStyle: .dark)))
+    }
+}
+ 
+private class StubTrackerStore: TrackerStoreProtocol {
+    func getTrackersAmount() -> Int {
+        3
+    }
+    
+    func getCategoriesAmount() -> Int {
+        2
+    }
+    
+    func getTrackersAmountPerSection(section: Int) -> Int {
+        switch section {
+        case 0:
+            return 1
+        case 1:
+            return 2
+        default:
+            return 0
         }
     }
     
-    func testViewController() {
-        let vc = TrackerCollectionViewController()
-        let trackers = StubTrackerStore()
-        assertSnapshot(matching: vc, as: .image)
+    func getCategoryLabel(section: Int) -> String {
+        switch section {
+        case 0:
+            return "Закрепленные"
+        case 1:
+            return "Домашний уют"
+        default:
+            return ""
+        }
     }
-
-}
-
-private class StubTrackerStore: TrackerStoreProtocol {
     
     var delegate: TrackerStoreDelegate?
     
-    private static let category = TrackerCategory(label: "Домашний уют")
-    
-    private static let trackers: [Tracker] = [
-            Tracker(
+    var trackers: [[Tracker]] = [
+            [Tracker(
                 id: UUID(),
                 label: "Поливать растения",
                 emoji: "❤️",
-                color: .yellow,
+                color: .red,
                 schedule: [.saturday]
-//                completedDaysCount: 10,
-//                isPinned: true,
-//                category: category
-            ),
-            Tracker(
+            )],
+            [Tracker(
                 id: UUID(),
                 label: "Кошка заслонила камеру на созвоне",
                 emoji: "😻",
                 color: .blue,
                 schedule: nil
-//                isPinned: false,
-//                category: category,
-//                completedDaysCount: 2
             ),
             Tracker(
                 id: UUID(),
@@ -75,23 +87,18 @@ private class StubTrackerStore: TrackerStoreProtocol {
                 emoji: "🌺",
                 color: .green,
                 schedule: nil
-//                completedDaysCount: 1,
-//                isPinned: false,
-//                category: category
-            )
+            )]
     ]
-    
-    func addNewTracker(_ tracker: Tracker, with category: TrackerCategory) throws {
-    }
-    
-    func fetchFilteredTrackers(date: Date, searchString: String) throws {
-    }
-    
+ 
+    func addNewTracker(_ tracker: Tracker, with category: TrackerCategory) throws {}
+ 
+    func fetchFilteredTrackers(date: Date, searchString: String) throws {}
+ 
     func getTracker(at indexPath: IndexPath) -> Tracker? {
-        let tracker = StubTrackerStore.trackers[indexPath.item]
+        let tracker = trackers[indexPath.section][indexPath.item]
         return tracker
     }
-    
-    func getTracker(with id: UUID) throws -> TrackerCoreData? {
-    }
+ 
+    func getTracker(with id: UUID) throws -> TrackerCoreData? { return nil }
 }
+ 

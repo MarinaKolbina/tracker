@@ -452,8 +452,6 @@ extension NewBehaviorViewController: DaysOfTheWeekDelegate {
 }
 
 //Данный код на Swift представляет собой реализацию пользовательского интерфейса для создания нового поведения в приложении. Он содержит различные элементы пользовательского интерфейса, такие как текстовое поле, таблицу, коллекции и кнопки.
-
-//Этот код также содержит протокол NewBehaviorViewControllerDelegate, который определяет метод dismissToTrackerCollectionViewController(), предназначенный для связи между NewBehaviorViewController и другим контроллером.
 //
 //NewBehaviorViewController также содержит ленивые свойства, которые инициализируют элементы пользовательского интерфейса, такие как textField, tableView, emojiCollectionView и colorsCollectionView. Кроме того, он также содержит массивы emojis и colors, которые определяют список доступных значков и цветов.
 //
