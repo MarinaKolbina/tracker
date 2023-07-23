@@ -17,6 +17,10 @@
 		B368729E29DA102200FF0E70 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B368729D29DA102200FF0E70 /* TextField.swift */; };
 		B37021422A6723F5006CE7B2 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = B37021412A6723F5006CE7B2 /* SnapshotTesting */; };
 		B37021442A69AD45006CE7B2 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37021432A69AD45006CE7B2 /* AnalyticsService.swift */; };
+		B37021462A6D41FA006CE7B2 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37021452A6D41FA006CE7B2 /* StatisticsViewController.swift */; };
+		B37021482A6D4D50006CE7B2 /* StatisticCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37021472A6D4D50006CE7B2 /* StatisticCell.swift */; };
+		B370214A2A6D6D99006CE7B2 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37021492A6D6D99006CE7B2 /* StatisticsViewModel.swift */; };
+		B370214C2A6D8588006CE7B2 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B370214B2A6D8588006CE7B2 /* Observable.swift */; };
 		B37FCDD029DB565C009E3C1D /* SupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37FCDCF29DB565C009E3C1D /* SupplementaryView.swift */; };
 		B37FCDD429DB783A009E3C1D /* DaysOfTheWeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37FCDD329DB783A009E3C1D /* DaysOfTheWeekViewController.swift */; };
 		B37FCDD629DCBD54009E3C1D /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37FCDD529DCBD54009E3C1D /* TrackerCollectionViewCell.swift */; };
@@ -74,6 +78,10 @@
 		B368729A29DA00C600FF0E70 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		B368729D29DA102200FF0E70 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		B37021432A69AD45006CE7B2 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
+		B37021452A6D41FA006CE7B2 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
+		B37021472A6D4D50006CE7B2 /* StatisticCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticCell.swift; sourceTree = "<group>"; };
+		B37021492A6D6D99006CE7B2 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
+		B370214B2A6D8588006CE7B2 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		B37FCDCF29DB565C009E3C1D /* SupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
 		B37FCDD329DB783A009E3C1D /* DaysOfTheWeekViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysOfTheWeekViewController.swift; sourceTree = "<group>"; };
 		B37FCDD529DCBD54009E3C1D /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -140,6 +148,17 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		B370214D2A6DC264006CE7B2 /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				B37021432A69AD45006CE7B2 /* AnalyticsService.swift */,
+				B37021492A6D6D99006CE7B2 /* StatisticsViewModel.swift */,
+				B37021452A6D41FA006CE7B2 /* StatisticsViewController.swift */,
+				B37021472A6D4D50006CE7B2 /* StatisticCell.swift */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
 		B396441F29F5A65C0031D51C /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -168,7 +187,7 @@
 				B3F284EA2A49A3FD00EE2785 /* Schedule */,
 				B3F284EE2A49A52900EE2785 /* TabBar */,
 				B368729029D8600F00FF0E70 /* SplashViewController.swift */,
-				B37021432A69AD45006CE7B2 /* AnalyticsService.swift */,
+				B370214D2A6DC264006CE7B2 /* Statistics */,
 				B3DBC87C29D20F930042CFB0 /* Assets.xcassets */,
 				B3F284F62A588C0500EE2785 /* ColorCell.swift */,
 				B3F284FA2A588F3A00EE2785 /* EmojiCell.swift */,
@@ -209,6 +228,7 @@
 			children = (
 				B3C7394B29ED5AFB00ADD453 /* Constants.swift */,
 				B368729A29DA00C600FF0E70 /* Models.swift */,
+				B370214B2A6D8588006CE7B2 /* Observable.swift */,
 				B3C7394929EC756F00ADD453 /* Date+extension.swift */,
 				B396442629F5B19A0031D51C /* UIColorMarshalling.swift */,
 				B37FCDCF29DB565C009E3C1D /* SupplementaryView.swift */,
@@ -511,9 +531,11 @@
 				B368729529D8A65A00FF0E70 /* MakeNewTrackerViewController.swift in Sources */,
 				B396442729F5B19A0031D51C /* UIColorMarshalling.swift in Sources */,
 				B3C7394C29ED5AFB00ADD453 /* Constants.swift in Sources */,
+				B37021462A6D41FA006CE7B2 /* StatisticsViewController.swift in Sources */,
 				B396442529F5B0D70031D51C /* TrackerStore.swift in Sources */,
 				B3F284E32A290E5900EE2785 /* OnboardingViewController.swift in Sources */,
 				B3C7394729E0950900ADD453 /* TrackerSupplementaryView.swift in Sources */,
+				B370214A2A6D6D99006CE7B2 /* StatisticsViewModel.swift in Sources */,
 				B368729E29DA102200FF0E70 /* TextField.swift in Sources */,
 				B37021442A69AD45006CE7B2 /* AnalyticsService.swift in Sources */,
 				B3C7394529E094AB00ADD453 /* TrackerCollectionViewController.swift in Sources */,
@@ -526,6 +548,7 @@
 				B3F284E12A29024500EE2785 /* OnboardingPageViewController.swift in Sources */,
 				B3C7394A29EC756F00ADD453 /* Date+extension.swift in Sources */,
 				B396442229F5A7090031D51C /* Trackers.xcdatamodeld in Sources */,
+				B37021482A6D4D50006CE7B2 /* StatisticCell.swift in Sources */,
 				B368729729D9ACD600FF0E70 /* NewBehaviorViewController.swift in Sources */,
 				B3DBC87429D20F920042CFB0 /* AppDelegate.swift in Sources */,
 				B37FCDD029DB565C009E3C1D /* SupplementaryView.swift in Sources */,
@@ -536,6 +559,7 @@
 				B396442B29F5B2D00031D51C /* TrackerRecordStore.swift in Sources */,
 				B368729129D8600F00FF0E70 /* SplashViewController.swift in Sources */,
 				B3F284FB2A588F3A00EE2785 /* EmojiCell.swift in Sources */,
+				B370214C2A6D8588006CE7B2 /* Observable.swift in Sources */,
 				B396442929F5B2B00031D51C /* TrackerCategoryStore.swift in Sources */,
 				B3F284F52A571A5200EE2785 /* CategoriesViewModel.swift in Sources */,
 				B3F284E92A48BFB200EE2785 /* CategoryTableViewCell.swift in Sources */,

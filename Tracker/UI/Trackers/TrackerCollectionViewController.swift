@@ -268,13 +268,11 @@ extension TrackerCollectionViewController: UICollectionViewDataSource {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         analyticsService.reportScreen(event: .open, onScreen: .main)
-        print(2)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         analyticsService.reportScreen(event: .close, onScreen: .main)
-        print(3)
     }
 }
 

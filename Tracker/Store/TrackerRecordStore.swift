@@ -13,10 +13,20 @@ enum TrackerRecordStoreError: Error {
     case decodingErrorInvalidDate
 }
 
+protocol TrackerRecordStoreDelegate: AnyObject {
+    func didUpdateRecords(_ records: Set<TrackerRecord>)
+}
+
 final class TrackerRecordStore: NSObject {
+    
+    static let shared = TrackerRecordStore()
+
     private let context: NSManagedObjectContext
     private var fetchedResultsController: NSFetchedResultsController<TrackerRecordCoreData>!
     private var trackerStore = TrackerStore()
+    private var completedTrackers: Set<TrackerRecord> = []
+
+    weak var delegate: TrackerRecordStoreDelegate?
     
     override convenience init() {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -41,19 +51,8 @@ final class TrackerRecordStore: NSObject {
         self.fetchedResultsController = controller
         try controller.performFetch()
     }
-    
-    var trackersRecords: [TrackerRecord] {
-        guard
-            let objects = self.fetchedResultsController.fetchedObjects,
-            let trackersCategories = try? objects.map({ try self.trackerRecord(from: $0) })
-        else {
-            print("Cannot pull trackers records")
-            return []
-        }
-        return trackersCategories
-    }
-    
-    private func fetchTrackerRecords() throws -> [TrackerRecord] {
+
+    func fetchTrackerRecords() throws -> [TrackerRecord] {
         let fetchRequest = TrackerRecordCoreData.fetchRequest()
         let trackerRecordsFromCoreData = try context.fetch(fetchRequest)
         return try trackerRecordsFromCoreData.map { try self.trackerRecord(from: $0)}
@@ -116,7 +115,6 @@ final class TrackerRecordStore: NSObject {
     }
     
     func getTrackerRecord(with id: UUID, date: Date) throws -> TrackerRecordCoreData? {
-        
         let startOfDay = Calendar.current.startOfDay(for: date)
         var components = DateComponents()
         components.day = 1
@@ -149,4 +147,3 @@ final class TrackerRecordStore: NSObject {
         }
     }
 }
-

@@ -22,8 +22,7 @@ final class TabBarController: UITabBarController {
         let firstVC = TrackerCollectionViewController(trackerStore: TrackerStore())
         firstVC.tabBarItem = UITabBarItem(title: trackersMenu, image: UIImage(named: "trackersIcon"), tag: 0)
         
-        let secondVC = UIViewController()
-        secondVC.view.backgroundColor = .white
+        let secondVC = StatisticsViewController(viewModel: StatisticsViewModel())
         secondVC.tabBarItem = UITabBarItem(title: statisticsText, image: UIImage(named: "statisticsIcon"), tag: 1)
         
         // Set the view controllers to display in the tab bar

@@ -44,7 +44,11 @@ struct Tracker: Identifiable {
         self.schedule = schedule
     }
 }
- 
+
+struct StatisticsCellModel {
+    let value: String
+    let description: String
+}
  
 enum Weekday: String, CaseIterable, Comparable {
     case monday
