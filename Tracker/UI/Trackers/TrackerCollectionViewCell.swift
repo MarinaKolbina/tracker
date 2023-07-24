@@ -7,11 +7,11 @@
 
 import Foundation
 import UIKit
- 
+
 protocol TrackerCellDelegate: AnyObject {
     func didTapRoundButton(of cell: TrackerCollectionViewCell, with tracker: Tracker)
 }
- 
+
 class TrackerCollectionViewCell: UICollectionViewCell {
     
     let trackerBackgroundView: UIView = {
@@ -84,9 +84,17 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    let pinImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "pin.fill")
+        imageView.tintColor = .white
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     let daysText = NSLocalizedString("days", comment: "Text to count days")
     let dayText = NSLocalizedString("day", comment: "Text to count day")
-
+    
     static let identifier = "trackerCell"
     private var days = 0 {
         didSet {
@@ -100,12 +108,13 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-                
+        
         emojiLabel.frame = trackerBackgroundView.bounds
         
         trackerBackgroundView.addSubview(tinyView)
         trackerBackgroundView.addSubview(emojiLabel)
         trackerBackgroundView.addSubview(titleLabel)
+        trackerBackgroundView.addSubview(pinImage)
         
         bottomStackView.addArrangedSubview(daysCounter)
         bottomStackView.addArrangedSubview(roundButton)
@@ -136,6 +145,9 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             
             mainStackView.heightAnchor.constraint(equalToConstant: 132),
             mainStackView.widthAnchor.constraint(equalToConstant: 167),
+            
+            pinImage.topAnchor.constraint(equalTo: trackerBackgroundView.topAnchor, constant: 12),
+            pinImage.trailingAnchor.constraint(equalTo: trackerBackgroundView.trailingAnchor, constant: -12)
         ])
     }
     
@@ -143,7 +155,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(tracker: Tracker, days: Int, isDone: Bool) {
+    func configure(tracker: Tracker, days: Int, isDone: Bool, interaction: UIInteraction) {
         self.tracker = tracker
         self.days = days
         
@@ -152,6 +164,8 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         trackerBackgroundView.backgroundColor = tracker.color
         roundButton.backgroundColor = tracker.color
         setupRoundButtonView(isDone)
+        trackerBackgroundView.addInteraction(interaction)
+        changePinState(tracker.isPinned)
     }
     
     func setupRoundButtonView(_ isDone: Bool) {
@@ -167,6 +181,10 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     func changeRoundButtonState(isDone: Bool) {
         days = isDone ? days + 1 : days - 1
         setupRoundButtonView(isDone)
+    }
+    
+    func changePinState(_ isPinned: Bool) {
+        pinImage.isHidden = !isPinned
     }
     
     @objc

@@ -1,15 +1,17 @@
 import Foundation
 import UIKit
- 
+
 protocol NewBehaviorViewControllerDelegate: AnyObject {
     func didTapCreateButton(_ tracker: Tracker, category: TrackerCategory)
+    func didTapSaveButton(_ tracker: Tracker, with newData: Tracker, category: TrackerCategory)
 }
- 
+
 class NewBehaviorViewController: UIViewController {
     
     lazy var textField: UITextField = {
         let field = TextField()
         field.placeholder = "Введите название трекера"
+        field.text = selectedLabel
         field.backgroundColor = UIColor(named: "grey_for_textField")
         field.layer.cornerRadius = 16
         field.clearButtonMode = .whileEditing
@@ -131,6 +133,9 @@ class NewBehaviorViewController: UIViewController {
     private lazy var categoriesViewController = CategoriesViewController(viewModel: CategoriesViewModel(trackerCategoryStore: trackerCategoryStore))
     
     var eventType: String?
+    var editingTracker: Tracker?
+    
+    let colorMarshalling = UIColorMarshalling()
     
     let emojis = Constants().emojis
     let colors = Constants().colors
@@ -169,6 +174,27 @@ class NewBehaviorViewController: UIViewController {
     
     weak var delegate: NewBehaviorViewControllerDelegate?
     
+    //    MARK: - LifeCycle
+    init(eventType: String, editingTracker: Tracker? = nil, trackerCategory: TrackerCategory? = nil) {
+        self.eventType = eventType
+        self.editingTracker = editingTracker
+        
+        if let tracker = editingTracker {
+            selectedLabel = tracker.label
+            selectedEmoji = tracker.emoji
+            selectedColor = tracker.color
+            selectedCategory = trackerCategory
+            if let schedule = tracker.schedule {
+                selectedDays = schedule
+            } else {}
+        }
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -183,7 +209,9 @@ class NewBehaviorViewController: UIViewController {
         } else if eventType == "IrregularEvent" {
             title = "Новое нерегулярное событие"
             selectedDays = Weekday.allCases
-            
+        } else if eventType == "Editing" {
+            title = "Редактирование привычки"
+            createButton.setTitle("Сохранить", for: .normal)
         }
         
         view.addSubview(scrollView)
@@ -216,7 +244,7 @@ class NewBehaviorViewController: UIViewController {
             textField.heightAnchor.constraint(equalToConstant: 75),
             
             emojiLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 9),
-
+            
             emojiCollectionView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             emojiCollectionView.heightAnchor.constraint(equalToConstant: 160),
             
@@ -229,11 +257,13 @@ class NewBehaviorViewController: UIViewController {
             buttonsStackView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
         ])
         
-        if eventType == "Behavior" {
+        if eventType == "Behavior" || eventType == "Editing" {
             NSLayoutConstraint.activate([tableView.heightAnchor.constraint(equalToConstant: 150)])
         } else if eventType == "IrregularEvent" {
             NSLayoutConstraint.activate([tableView.heightAnchor.constraint(equalToConstant: 75)])
         }
+        
+        checkFullForm()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -247,20 +277,16 @@ class NewBehaviorViewController: UIViewController {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 1 {
+        if indexPath.row == 0 {
+            let navigationController = UINavigationController(rootViewController: categoriesViewController)
+            categoriesViewController.modalPresentationStyle = .overFullScreen
+            present(navigationController, animated: true, completion: nil)
+        } else if indexPath.row == 1 {
             let daysOfTheWeekViewController = DaysOfTheWeekViewController()
             daysOfTheWeekViewController.delegate = self
             daysOfTheWeekViewController.selectedDays = selectedDays
             let navigationController = UINavigationController(rootViewController: daysOfTheWeekViewController)
             daysOfTheWeekViewController.modalPresentationStyle = .overFullScreen
-            present(navigationController, animated: true, completion: nil)
-        }
-        
-        if indexPath.row == 0 {
-//            categoriesViewController.delegate = self
-//            categoriesViewController.selectedCategories = selectedCategories
-            let navigationController = UINavigationController(rootViewController: categoriesViewController)
-            categoriesViewController.modalPresentationStyle = .overFullScreen
             present(navigationController, animated: true, completion: nil)
         }
     }
@@ -285,9 +311,13 @@ class NewBehaviorViewController: UIViewController {
                                   schedule: selectedDays
             )
             print(tracker)
-            delegate?.didTapCreateButton(tracker, category: selectedCategory!)
+            if eventType == "Editing" {
+                delegate?.didTapSaveButton(editingTracker!, with: tracker, category: selectedCategory!)
+            } else {
+                delegate?.didTapCreateButton(tracker, category: selectedCategory!)
+                self.presentingViewController?.dismiss(animated: false, completion: nil)
+            }
             
-            self.presentingViewController?.dismiss(animated: false, completion: nil)
             self.presentingViewController?.dismiss(animated: true, completion: nil)
             
         } else {
@@ -310,17 +340,17 @@ class NewBehaviorViewController: UIViewController {
         }
     }
 }
- 
- 
+
+
 // MARK: - UITableViewDataSource, UITableViewDelegate
- 
+
 extension NewBehaviorViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if eventType == "Behavior" {
+        if eventType == "Behavior" || eventType == "Editing" {
             return 2
         } else if eventType == "IrregularEvent" {
             return 1
@@ -344,7 +374,6 @@ extension NewBehaviorViewController: UITableViewDataSource, UITableViewDelegate 
         // Настраиваем текст ячейки
         if indexPath.row == 0 {
             cell.textLabel?.text = "Категория"
-            // Будет доделано в следующих спринтах
             cell.accessoryType = .disclosureIndicator
             cell.detailTextLabel?.text = selectedCategory?.label
         } else {
@@ -359,9 +388,9 @@ extension NewBehaviorViewController: UITableViewDataSource, UITableViewDelegate 
         return cell
     }
 }
- 
+
 // MARK: - UICollectionViewDataSource
- 
+
 extension NewBehaviorViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -374,24 +403,34 @@ extension NewBehaviorViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell: UICollectionViewCell
         if collectionView == emojiCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath) as! EmojiCell
             cell.configure(emoji: emojis[indexPath.row])
+            if let emoji = selectedEmoji {
+                if emoji == emojis[indexPath.row] {
+                    cell.contentView.backgroundColor = UIColor(named: "grey_for_emojies")
+                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
+                }
+            }
             return cell
         } else if collectionView == colorsCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorCell", for: indexPath) as! ColorCell
             cell.configure(color: colors[indexPath.row]!)
+            if let color = selectedColor {
+                if colorMarshalling.hexString(from: color) == colorMarshalling.hexString(from: colors[indexPath.row]!) {
+                    cell.contentView.layer.borderWidth = 3
+                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
+                }
+            }
             return cell
-//            cell.layer.borderColor = UIColor.black.withAlphaComponent(0.3).cgColor
         } else {
             return UICollectionViewCell()
         }
     }
 }
- 
+
 // MARK: - UICollectionViewDelegateFlowLayout
- 
+
 extension NewBehaviorViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -440,7 +479,7 @@ extension NewBehaviorViewController: UICollectionViewDelegateFlowLayout {
         0
     }
 }
- 
+
 extension NewBehaviorViewController: DaysOfTheWeekDelegate {
     func didChooseDays(days: [Weekday]) {
         // сохраняем выбранные дни в свойство

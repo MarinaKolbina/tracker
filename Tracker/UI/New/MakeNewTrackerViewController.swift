@@ -4,10 +4,10 @@
 //
 //  Created by Marina Kolbina on 01/04/2023.
 //
- 
+
 import Foundation
 import UIKit
- 
+
 class MakeNewTrackerViewController: UIViewController {
     
     var behaviorButton: UIButton = {
@@ -34,14 +34,14 @@ class MakeNewTrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
- 
+        
         view.backgroundColor = .white
         title = "Создание трекера"
- 
+        
         //Create items
         view.addSubview(behaviorButton)
         view.addSubview(irregularEventButton)
- 
+        
         NSLayoutConstraint.activate([
             behaviorButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             behaviorButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -64,8 +64,7 @@ class MakeNewTrackerViewController: UIViewController {
     }
     
     func presentBehaviorController(eventType: String) {
-        let newBehaviorViewController = NewBehaviorViewController()
-        newBehaviorViewController.eventType = eventType
+        let newBehaviorViewController = NewBehaviorViewController(eventType: eventType)
         if let trackerCollectionViewController = (presentingViewController as? TabBarController)?.viewControllers?[0] as? TrackerCollectionViewController
         {
             newBehaviorViewController.delegate = trackerCollectionViewController

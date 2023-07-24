@@ -35,13 +35,15 @@ struct Tracker: Identifiable {
     let emoji: String
     let color: UIColor
     let schedule: [Weekday]?
+    let isPinned: Bool
     
-    init(id: UUID = UUID(), label: String, emoji: String, color: UIColor, schedule: [Weekday]?) {
+    init(id: UUID = UUID(), label: String, emoji: String, color: UIColor, schedule: [Weekday]?, isPinned: Bool = false) {
         self.id = id
         self.label = label
         self.emoji = emoji
         self.color = color
         self.schedule = schedule
+        self.isPinned = isPinned
     }
 }
 

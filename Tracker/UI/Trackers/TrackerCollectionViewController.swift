@@ -5,7 +5,6 @@
 //  Created by Marina Kolbina on 07/04/2023.
 //
 
-import Foundation
 import UIKit
 
 class TrackerCollectionViewController: UIViewController, UICollectionViewDelegate {
@@ -85,7 +84,18 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
     }()
-
+    
+    private lazy var filterButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle(NSLocalizedString("filters", comment: ""), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        button.titleLabel?.textColor = .white
+        button.backgroundColor = UIColor(named: "blue_YP")
+        button.layer.cornerRadius = 16
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private var searchBarText: String = "" {
         didSet {
             try? trackerStore.fetchFilteredTrackers(date: currentDate, searchString: searchBarText)
@@ -122,6 +132,7 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
         view.addSubview(littleTitle)
         view.addSubview(navigationBar)
         view.addSubview(trackersCollectionView)
+        view.addSubview(filterButton)
         
         view.backgroundColor = UIColor(named: "background_screen")
         
@@ -156,6 +167,11 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
             trackersCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             trackersCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             trackersCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
+            filterButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            filterButton.widthAnchor.constraint(equalToConstant: 114),
+            filterButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         try? trackerStore.fetchFilteredTrackers(date: currentDate, searchString: searchBarText)
@@ -176,7 +192,6 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     
     @objc func didTapPlusButton() {
         analyticsService.reportEvent(event: .click, screen: .main, item: .addTrack)
-        print(1)
         let makeNewTrackerViewController = MakeNewTrackerViewController()
         let navigationController = UINavigationController(rootViewController: makeNewTrackerViewController)
         present(navigationController, animated: true, completion: nil)
@@ -195,20 +210,43 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
     func reloadTrackersCollectionView() {
         imageView.isHidden = trackerStore.getTrackersAmount() > 0
         littleTitle.isHidden = trackerStore.getTrackersAmount() > 0
+        filterButton.isHidden = trackerStore.getTrackersAmount() == 0
         trackersCollectionView.isHidden = trackerStore.getTrackersAmount() == 0
         
         trackersCollectionView.reloadData()
     }
     
+    private func pinTracker(_ tracker: Tracker) {
+        do {
+            try trackerStore.changePin(for: tracker)
+        } catch {
+            print("Error saving context: \(error)")
+        }
+    }
+    
+    private func editTracker(_ tracker: Tracker, category: TrackerCategory) {
+        analyticsService.reportEvent(event: .click, screen: .main, item: .edit)
+        
+        let newBehaviorViewController = NewBehaviorViewController(eventType: "Editing", editingTracker: tracker, trackerCategory: category)
+        newBehaviorViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: newBehaviorViewController)
+        newBehaviorViewController.modalPresentationStyle = .overFullScreen
+        present(navigationController, animated: true, completion: nil)
+    }
+    
+    private func deleteTracker(_ tracker: Tracker) {
+        do {
+            try trackerStore.deleteTracker(tracker)
+            analyticsService.reportEvent(event: .click, screen: .main, item: .delete)
+        } catch {
+            print("Error saving context: \(error)")
+        }
+    }
+    
     @objc
     private func didTapFilterButton() {
         analyticsService.reportEvent(event: .click, screen: .main, item: .filter)
-        //        TO DO
     }
-    
-//    analyticsService.reportEvent(event: .click, screen: .main, item: .edit)
-//    analyticsService.reportEvent(event: .click, screen: .main, item: .delete)
-    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -237,7 +275,9 @@ extension TrackerCollectionViewController: UICollectionViewDataSource {
             isDone = true
         }
         
-        cell.configure(tracker: tracker, days: daysCount, isDone: isDone)
+        let interaction = UIContextMenuInteraction(delegate: self)
+        
+        cell.configure(tracker: tracker, days: daysCount, isDone: isDone, interaction: interaction)
         cell.delegate = self
         
         return cell
@@ -273,6 +313,38 @@ extension TrackerCollectionViewController: UICollectionViewDataSource {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         analyticsService.reportScreen(event: .close, onScreen: .main)
+    }
+}
+
+// MARK: - UIContextMenuInteractionDelegate
+extension TrackerCollectionViewController: UIContextMenuInteractionDelegate {
+    
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard
+            let location = interaction.view?.convert(location, to: trackersCollectionView),
+            let indexPath = trackersCollectionView.indexPathForItem(at: location),
+            let tracker = trackerStore.getTracker(at: indexPath),
+            let category = trackerCategoryStore.getTrackerCategory(at: indexPath)
+        else { return nil }
+        
+        let pinTitle = tracker.isPinned ? "Открепить" : "Закрепить"
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { suggestedActions in
+            UIMenu(title: "", children: [
+                UIAction(title: pinTitle, image: nil, identifier: nil, discoverabilityTitle: nil, attributes: [], state: .off) { [weak self] _ in
+                    self?.pinTracker(tracker)
+                },
+                UIAction(title: "Редактировать", image: nil, identifier: nil, discoverabilityTitle: nil, attributes: .destructive, state: .off) { [weak self] _ in
+                    self?.editTracker(tracker, category: category)
+                },
+                UIAction(title: "Удалить", image: nil, identifier: nil, discoverabilityTitle: nil, attributes: .destructive, state: .off) { [weak self] _ in
+                    self?.deleteTracker(tracker)
+                }
+            ])
+        })
     }
 }
 
@@ -328,9 +400,17 @@ extension TrackerCollectionViewController: UISearchBarDelegate {
 // MARK: - NewBehaviorViewControllerDelegate
 extension TrackerCollectionViewController: NewBehaviorViewControllerDelegate {
     func didTapCreateButton(_ tracker: Tracker, category: TrackerCategory) {
-        
         do {
             try trackerStore.addNewTracker(tracker, with: category)
+        } catch {
+            print("Error saving context: \(error)")
+        }
+        trackersCollectionView.reloadData()
+    }
+    
+    func didTapSaveButton(_ tracker: Tracker, with newData: Tracker, category: TrackerCategory) {
+        do {
+            try trackerStore.updateTracker(tracker, with: newData, trackerCategory: category)
         } catch {
             print("Error saving context: \(error)")
         }
@@ -348,7 +428,6 @@ extension TrackerCollectionViewController: TrackerCellDelegate {
         if let trackerRecordExisted = try? trackerRecordStore.getTrackerRecord(with: tracker.id, date: currentDate) {
             try? trackerRecordStore.removeTrackerRecord(trackerRecordStore.trackerRecord(from: trackerRecordExisted))
             cell.changeRoundButtonState(isDone: false)
-
         } else {
             try? trackerRecordStore.addNewTrackerRecord(trackerRecord, with: tracker)
             cell.changeRoundButtonState(isDone: true)
