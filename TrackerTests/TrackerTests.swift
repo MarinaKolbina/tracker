@@ -22,13 +22,11 @@ final class TrackerTests: XCTestCase {
     
     func testViewControllerLight() {
         let vc = TrackerCollectionViewController(trackerStore: StubTrackerStore())
-        vc.view.backgroundColor = .white
         assertSnapshot(matching: vc, as: .image(traits: .init(userInterfaceStyle: .light)))
     }
     
     func testViewControllerDark() {
         let vc = TrackerCollectionViewController(trackerStore: StubTrackerStore())
-        vc.view.backgroundColor = .black
         assertSnapshot(matching: vc, as: .image(traits: .init(userInterfaceStyle: .dark)))
     }
 }
