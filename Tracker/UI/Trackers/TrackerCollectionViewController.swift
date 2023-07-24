@@ -325,8 +325,7 @@ extension TrackerCollectionViewController: UIContextMenuInteractionDelegate {
         guard
             let location = interaction.view?.convert(location, to: trackersCollectionView),
             let indexPath = trackersCollectionView.indexPathForItem(at: location),
-            let tracker = trackerStore.getTracker(at: indexPath),
-            let category = trackerCategoryStore.getTrackerCategory(at: indexPath)
+            let tracker = trackerStore.getTracker(at: indexPath)
         else { return nil }
         
         let pinTitle = tracker.isPinned ? "Открепить" : "Закрепить"
@@ -337,7 +336,9 @@ extension TrackerCollectionViewController: UIContextMenuInteractionDelegate {
                     self?.pinTracker(tracker)
                 },
                 UIAction(title: "Редактировать", image: nil, identifier: nil, discoverabilityTitle: nil, attributes: .destructive, state: .off) { [weak self] _ in
-                    self?.editTracker(tracker, category: category)
+                    if let category = self?.trackerCategoryStore.getTrackerCategory(at: indexPath) {
+                        self?.editTracker(tracker, category: category)
+                    }
                 },
                 UIAction(title: "Удалить", image: nil, identifier: nil, discoverabilityTitle: nil, attributes: .destructive, state: .off) { [weak self] _ in
                     self?.deleteTracker(tracker)
