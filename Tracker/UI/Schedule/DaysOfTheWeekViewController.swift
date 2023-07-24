@@ -20,7 +20,7 @@ class DaysOfTheWeekViewController: UIViewController {
     
     lazy var readyButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = UIColorMarshalling.toggleBlackWhiteColor
         button.setTitleColor(.white, for: .normal)
         button.setTitle("Готово", for: .normal)
         button.layer.cornerRadius = 16
@@ -34,6 +34,7 @@ class DaysOfTheWeekViewController: UIViewController {
         
         view.backgroundColor = .white
         title = "Расписание"
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColorMarshalling.toggleBlackWhiteColor]
         
         view.addSubview(tableView)
         view.addSubview(readyButton)

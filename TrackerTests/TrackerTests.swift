@@ -100,5 +100,11 @@ private class StubTrackerStore: TrackerStoreProtocol {
     }
  
     func getTracker(with id: UUID) throws -> TrackerCoreData? { return nil }
+    
+    func changePin(for tracker: Tracker) throws {}
+    
+    func deleteTracker(_ tracker: Tracker) throws {}
+    
+    func updateTracker(_ tracker: Tracker, with newData: Tracker, trackerCategory category: TrackerCategory) throws {}
 }
  

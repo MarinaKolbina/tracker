@@ -35,7 +35,7 @@ class CategoriesViewController: UIViewController {
     
     private lazy var addNewCategoryButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = UIColorMarshalling.toggleBlackWhiteColor
         button.setTitleColor(.white, for: .normal)
         button.setTitle("Добавить категорию", for: .normal)
         button.layer.cornerRadius = 16

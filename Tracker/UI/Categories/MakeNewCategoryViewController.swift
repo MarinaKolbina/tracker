@@ -44,7 +44,7 @@ class MakeNewCategoryViewController: UIViewController {
     var isReadyButtonEnabled: Bool = false {
         willSet {
             if newValue {
-                readyButton.backgroundColor = .black
+                readyButton.backgroundColor = UIColorMarshalling.toggleBlackWhiteColor
                 readyButton.isEnabled = true
             } else {
                 readyButton.backgroundColor = .gray
@@ -71,6 +71,7 @@ class MakeNewCategoryViewController: UIViewController {
         
         view.backgroundColor = .white
         title = text
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColorMarshalling.toggleBlackWhiteColor]
                 
         view.addSubview(textField)
         view.addSubview(readyButton)

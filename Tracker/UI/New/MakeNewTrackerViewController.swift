@@ -12,7 +12,7 @@ class MakeNewTrackerViewController: UIViewController {
     
     var behaviorButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = UIColorMarshalling.toggleBlackWhiteColor
         button.setTitleColor(.white, for: .normal)
         button.setTitle("Привычка", for: .normal)
         button.addTarget(self, action: #selector(didTapBehaviorButton), for: .touchUpInside)
@@ -23,7 +23,7 @@ class MakeNewTrackerViewController: UIViewController {
     
     var irregularEventButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = UIColorMarshalling.toggleBlackWhiteColor
         button.setTitleColor(.white, for: .normal)
         button.setTitle("Нерегулярное событие", for: .normal)
         button.addTarget(self, action: #selector(didTapIrregularEventButton), for: .touchUpInside)

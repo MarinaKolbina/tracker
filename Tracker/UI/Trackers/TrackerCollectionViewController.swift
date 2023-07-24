@@ -17,17 +17,16 @@ class TrackerCollectionViewController: UIViewController, UICollectionViewDelegat
             target: self,
             action: #selector(didTapPlusButton)
         )
+        button.tintColor = UIColorMarshalling.toggleBlackWhiteColor
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    let trackersText = NSLocalizedString("trackers", comment: "Text displayed on title")
-    
     lazy var mainTitle: UILabel = {
         let title = UILabel()
-        title.text = trackersText
+        title.text = NSLocalizedString("trackers", comment: "Text displayed on title")
         title.font = UIFont(name:"HelveticaNeue-Bold", size: 34.0)
-        title.textColor = .black
+        title.textColor = UIColorMarshalling.toggleBlackWhiteColor
         title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
