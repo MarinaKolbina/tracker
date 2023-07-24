@@ -18,10 +18,11 @@ protocol TrackerCategoryStoreProtocol {
     
     func getTrackerCategory(with id: UUID) throws -> TrackerCategoryCoreData?
     func getTrackerCategory(at indexPath: IndexPath) -> TrackerCategory?
+    func getTrackerCategory(by label: String) -> TrackerCategory?
     func addNewCategory(_ category: TrackerCategory) throws
     var delegate: TrackerCategoryStoreDelegate? { get set }
     func deleteCategory(_ category: TrackerCategory) throws
-    func fetchCategory() throws -> [TrackerCategory] 
+    func fetchCategory() throws -> [TrackerCategory]
 }
 
 protocol TrackerCategoryStoreDelegate: AnyObject {
@@ -32,13 +33,13 @@ final class TrackerCategoryStore: NSObject {
     private let context: NSManagedObjectContext
     private var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData>!
     weak var delegate: TrackerCategoryStoreDelegate?
-
-
+    
+    
     convenience override init() {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         try! self.init(context: context)
     }
-
+    
     init(context: NSManagedObjectContext) throws { //устанавливает стек Core Data, выполняет первоначальную выборку и выбирает контроллер выборки.
         self.context = context
         super.init()
@@ -86,7 +87,7 @@ final class TrackerCategoryStore: NSObject {
             throw error
         }
     }
-
+    
     private func category(from trackerCategoryCoreData: TrackerCategoryCoreData) throws -> TrackerCategory {
         guard let label = trackerCategoryCoreData.label else {
             throw TrackerCategoryStoreError.decodingErrorInvalidLabel
@@ -125,6 +126,22 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         } catch {
             return nil
         }
+    }
+    
+    func getTrackerCategory(by label: String) -> TrackerCategory? {
+        let request = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+        request.predicate = NSPredicate(format: "%K == %@",
+                                        #keyPath(TrackerCategoryCoreData.label),
+                                        label)
+        
+        guard
+            let categoriesCoreData = try? context.fetch(request),
+            let trackersCategories = try? categoriesCoreData.map({ try self.category(from: $0) })
+        else {
+            return nil
+        }
+        
+        return trackersCategories.first
     }
 }
 

@@ -336,9 +336,11 @@ extension TrackerCollectionViewController: UIContextMenuInteractionDelegate {
                     self?.pinTracker(tracker)
                 },
                 UIAction(title: "Редактировать", image: nil, identifier: nil, discoverabilityTitle: nil, attributes: .destructive, state: .off) { [weak self] _ in
-                    if let category = self?.trackerCategoryStore.getTrackerCategory(at: indexPath) {
-                        self?.editTracker(tracker, category: category)
-                    }
+                    guard
+                        let categoryLabel = self?.trackerStore.getCategoryLabel(section: indexPath.section),
+                        let trackerCategory = self?.trackerCategoryStore.getTrackerCategory(by: categoryLabel)
+                    else { return }
+                    self?.editTracker(tracker, category: trackerCategory)
                 },
                 UIAction(title: "Удалить", image: nil, identifier: nil, discoverabilityTitle: nil, attributes: .destructive, state: .off) { [weak self] _ in
                     self?.deleteTracker(tracker)
